@@ -7,7 +7,7 @@ package chessproject2;
  * Abstract piece class that has the universal attributes and methods for all the piece subclasses e.g Pawn, Rook, Bishop etc
  * Methods are public or protected depending on whether they are used outside of it or not for extra security
  */
- public abstract class Piece {
+ public abstract class Piece implements Movable{
 
     protected String type, unicode;
     protected boolean isWhite;
@@ -32,6 +32,7 @@ package chessproject2;
 
     }
 
+    @Override
     public abstract int[][] ValidMoves(Piece[][] board);
     
 }
