@@ -1,13 +1,11 @@
-
 package chessproject2;
 
 /**
- *Child class of piece 
- * Has all of the Queen values and validMoves
- * 
+ * Child class of piece Has all of the Queen values and validMoves
+ *
  */
-public class Queen extends Piece{
-    
+public class Queen extends Piece {
+
     public Queen(boolean isWhite, int row, int column) {
         this.isWhite = isWhite;
         this.position[0] = row;
@@ -19,37 +17,51 @@ public class Queen extends Piece{
             this.unicode = "\u265B";
         }
     }
-    
+
     @Override
-    public int[][] ValidMoves(Piece[][] board) {
+    public int[][] ValidMoves(Piece[][] board, boolean checkDiscoved) {
+        int kingRow = -1, kingCol = -1;
+        if (checkDiscoved == true) {
+
+            for (int r = 0; r < 8; r++) {
+                for (int c = 0; c < 8; c++) {
+                    Piece p = board[r][c];
+                    if (p != null && p.type.equals("King") && p.isWhite == isWhite) {
+                        kingRow = r;
+                        kingCol = c;
+                    }
+                }
+            }
+        }
+
         int[][] possibleMoves = new int[64][2];
         int moveCount = 0;
-        
+
         int[][] direction = {
-            {1,0},{-1,0},{0,1},{0,-1}, // rook moves
-            {1,1},{1,-1},{-1,1},{-1,-1}
+            {1, 0}, {-1, 0}, {0, 1}, {0, -1}, // rook moves
+            {1, 1}, {1, -1}, {-1, 1}, {-1, -1}
         };
-        
-        for(int[] dir : direction)
-        {
+
+        for (int[] dir : direction) {
             int newRow = position[0] + dir[0];
             int newCol = position[1] + dir[1];
-            
-            while(newRow >= 0 && newRow <= 7 && newCol >= 0 && newCol <= 7)
-            {
+
+            while (newRow >= 0 && newRow <= 7 && newCol >= 0 && newCol <= 7) {
                 Piece target = board[newRow][newCol];
-                
-                if(target == null)
-                {
-                    possibleMoves[moveCount][0] = newRow;
-                    possibleMoves[moveCount][1] = newCol;
-                    moveCount++;
+
+                if (target == null) {
+                    if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(newRow, newCol, board))) {
+                        possibleMoves[moveCount][0] = newRow;
+                        possibleMoves[moveCount][1] = newCol;
+                        moveCount++;
+                    }
                 } else {
-                    if(target.isWhite != this.isWhite)
-                    {
-                    possibleMoves[moveCount][0] = newRow;
-                    possibleMoves[moveCount][1] = newCol;
-                    moveCount++;
+                    if (target.isWhite != this.isWhite) {
+                        if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(newRow, newCol, board))) {
+                            possibleMoves[moveCount][0] = newRow;
+                            possibleMoves[moveCount][1] = newCol;
+                            moveCount++;
+                        }
                     }
                     break;
                 }
@@ -59,8 +71,8 @@ public class Queen extends Piece{
         }
         int[][] validMoves = new int[moveCount][2];
         System.arraycopy(possibleMoves, 0, validMoves, 0, moveCount);
-        
+
         return validMoves;
     }
-    
+
 }

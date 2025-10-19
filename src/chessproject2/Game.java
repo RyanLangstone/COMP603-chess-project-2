@@ -377,7 +377,7 @@ public class Game {
                 }
                 //Valid piece selected
                 piece = board[from[0]][from[1]];
-                validMoves = piece.ValidMoves(board);
+                validMoves = piece.ValidMoves(board, true);
                 if (validMoves.length == 0) {
                     System.out.println("That " + piece.type + " has no valid moves. Choose another");
                     continue;
@@ -601,7 +601,7 @@ public class Game {
         }
 
         // 3. Try all king moves
-        int[][] kingMoves = board[kingRow][kingCol].ValidMoves(board);
+        int[][] kingMoves = board[kingRow][kingCol].ValidMoves(board, true);
         for (int[] move : kingMoves) {
             int newRow = move[0], newCol = move[1];
             Piece backup = board[newRow][newCol];
@@ -627,7 +627,7 @@ public class Game {
                     continue;
                 }
 
-                int[][] moves = p.ValidMoves(board);
+                int[][] moves = p.ValidMoves(board, true);
                 for (int[] move : moves) {
                     int newRow = move[0], newCol = move[1];
                     Piece backup = board[newRow][newCol];
@@ -656,7 +656,7 @@ public class Game {
     /**
      * Utility to check if a square is attacked by enemy pieces
      */
-    private static boolean isSquareAttacked(int row, int col, boolean byWhite, Piece[][] board) {
+    public static boolean isSquareAttacked(int row, int col, boolean byWhite, Piece[][] board) {
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 8; c++) {
                 Piece p = board[r][c];
@@ -664,7 +664,7 @@ public class Game {
                     continue;
                 }
 
-                int[][] moves = p.ValidMoves(board);
+                int[][] moves = p.ValidMoves(board, false);
                 for (int[] m : moves) {
                     if (m[0] == row && m[1] == col) {
                         return true;
