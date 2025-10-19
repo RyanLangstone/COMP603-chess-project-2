@@ -6,7 +6,7 @@ package chessproject2;
  * protected depending on whether they are used outside of it or not for extra
  * security
  */
-public abstract class Piece {
+ public abstract class Piece implements Movable{
 
     protected String type, unicode;
     protected boolean isWhite;
@@ -91,6 +91,6 @@ public abstract class Piece {
      * the check itself (stop recursion)
      *
      */
-    public abstract int[][] ValidMoves(Piece[][] board, boolean checkDiscoved);
-
+    @Override
+    public abstract int[][] ValidMoves(Piece[][] board, boolean checkDiscoved);    
 }
