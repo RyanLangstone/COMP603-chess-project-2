@@ -6,6 +6,6 @@ package chessproject2;
  * contract for move validation.
  */
 public interface Movable {
-    public int[][] ValidMoves(Piece[][] board);
+    public int[][] ValidMoves(Piece[][] board, boolean checkDiscoved);
 
 }
