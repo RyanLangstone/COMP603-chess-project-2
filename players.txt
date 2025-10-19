@@ -1,0 +1,2 @@
+White: lolo, 0, 0
+Black: dodo, 0, 0

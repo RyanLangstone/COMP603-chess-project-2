@@ -1,0 +1,8 @@
+(Rook,true)(Knight,true)(Bishop,true)(Queen,true)(King,true)(Bishop,true)(Knight,true)(Rook,true)
+(Pawn,true)(Pawn,true)(Pawn,true)(Pawn,true)(Pawn,true)(Pawn,true)(Pawn,true)(Pawn,true)
+(null)(null)(null)(null)(null)(null)(null)(null)
+(null)(null)(null)(null)(null)(null)(null)(null)
+(null)(null)(null)(null)(null)(null)(null)(null)
+(null)(null)(null)(null)(null)(null)(null)(null)
+(Pawn,false)(Pawn,false)(Pawn,false)(Pawn,false)(Pawn,false)(Pawn,false)(Pawn,false)(Pawn,false)
+(Rook,false)(Knight,false)(Bishop,false)(Queen,false)(King,false)(Bishop,false)(Knight,false)(Rook,false)

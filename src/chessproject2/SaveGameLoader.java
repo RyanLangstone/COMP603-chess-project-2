@@ -3,6 +3,7 @@ package chessproject2;
 
 import java.io.File;
 import java.util.Scanner;
+import javax.swing.JFileChooser;
 
 /** SaveGameLoader is responsible for listing available save files and 
  * allowing the user to choose one from the cui
@@ -16,7 +17,29 @@ import java.util.Scanner;
  */
 public class SaveGameLoader {
     
+    //GUI Version
+    public static String chooseSaveFileGUI()
+    {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Select a Saved Game");
+        fileChooser.setCurrentDirectory(new File("saves")); //Starts in the saves folder
+        
+        //Only allows the use of .txt files
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Text Files (*.txt)", ".txt"));
+        
+        int result = fileChooser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION)
+        {
+            File selectedFile = fileChooser.getSelectedFile();
+            return selectedFile.getAbsolutePath();
+        } else {
+            //User cancelled
+            return null;
+        }
+    }
     
+    
+    // Console version (Used for debugging)
     public static String chooseSaveFile(Scanner scanner)
     {
         //Locates the saves folder
