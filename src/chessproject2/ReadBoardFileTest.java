@@ -2,6 +2,7 @@
 package chessproject2;
 
 
+import chessproject2.Pieces.PieceFactory;
 import static chessproject2.Game.board; //Import the shared board object from Game
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
