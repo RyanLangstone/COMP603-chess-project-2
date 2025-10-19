@@ -4,6 +4,10 @@
  */
 package chessproject2.GUI;
 
+import chessproject2.Player;
+import chessproject2.PlayerFileIO;
+import java.util.HashMap;
+
 /**
  *
  * @author RyanL
@@ -20,6 +24,21 @@ public class NewGameFrame extends javax.swing.JFrame {
         TextPrompt.addPlaceholder(wTextField, "Enter name here");
         TextPrompt.addPlaceholder(bTextField, "Enter name here");
 
+        //Loads existing players from PlayerFileIO
+        HashMap<String, Player> players = PlayerFileIO.loadPlayers();
+        if (players != null && !players.isEmpty()) {
+            boolean first = true;
+
+            for (Player p : players.values()) {
+                wExistingDropdown.addItem(p.getName());
+                bExistingDropdown.addItem(p.getName());
+                if (first) {
+                    wExistingDropdown.setSelectedItem(p.getName());
+                    bExistingDropdown.setSelectedItem(p.getName());
+                    first = false;
+                }
+            }
+        }
     }
 
     /**
@@ -45,7 +64,7 @@ public class NewGameFrame extends javax.swing.JFrame {
         newPlayerBRadial = new javax.swing.JRadioButton();
         blackPlayerLabel = new javax.swing.JLabel();
         bTextField = new javax.swing.JTextField();
-        BExistingDropdown = new javax.swing.JComboBox<>();
+        bExistingDropdown = new javax.swing.JComboBox<>();
         gameNamePannel = new javax.swing.JPanel();
         gameNameLabel = new javax.swing.JLabel();
         gameNameField = new javax.swing.JTextField();
@@ -148,7 +167,7 @@ public class NewGameFrame extends javax.swing.JFrame {
                             .addGroup(bPannelLayout.createSequentialGroup()
                                 .addComponent(existingPlayerBRadial, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(BExistingDropdown, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(bExistingDropdown, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(bPannelLayout.createSequentialGroup()
                                 .addComponent(newPlayerBRadial, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -170,7 +189,7 @@ public class NewGameFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(bPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(existingPlayerBRadial)
-                    .addComponent(BExistingDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(bExistingDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25))
         );
 
@@ -290,8 +309,8 @@ public class NewGameFrame extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> BExistingDropdown;
     private javax.swing.ButtonGroup bButtonGroup;
+    private javax.swing.JComboBox<String> bExistingDropdown;
     private javax.swing.JPanel bPannel;
     private javax.swing.JTextField bTextField;
     private javax.swing.JButton backButton;
