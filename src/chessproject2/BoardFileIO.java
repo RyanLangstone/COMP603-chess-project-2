@@ -1,6 +1,7 @@
 
 package chessproject2;
 
+import chessproject2.ChessDB.ReadGameDB;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -45,7 +46,7 @@ public class BoardFileIO {
     public static void loadDefaultBoard()
     {
         try {
-        ReadBoardFileTest.ReadBoardFile(DEFAULT_FILE); //Tries loading default board from the file
+        ReadGameDB.ReadBoardFile(DEFAULT_FILE); //Tries loading default board from the file
         } catch (Exception e)
         {
             System.out.println("default.txt not found, generating board manually...");

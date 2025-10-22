@@ -28,7 +28,7 @@ import java.io.PrintWriter;
  * (Pawn,true)(null)(Pawn,false)....
  *
  * 
- */
+ */ /*
 public class BoardFileWrite {
       private static final String SAVE_FOLDER = "saves";
       public static void WriteBoardFile(String saveFileName) {
@@ -101,3 +101,4 @@ public class BoardFileWrite {
           return "game" + next + ".txt";
       }
 }
+*/
