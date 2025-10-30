@@ -234,6 +234,11 @@ public class NewGameFrame extends javax.swing.JFrame {
 
         createButton.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         createButton.setText("Create");
+        createButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createButtonActionPerformed(evt);
+            }
+        });
 
         backButton.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         backButton.setText("Back");
@@ -307,6 +312,40 @@ public class NewGameFrame extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
+    private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
+        GameFrame home = new GameFrame(getGameName(), getWName(), getBName());
+        home.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_createButtonActionPerformed
+
+    private String getGameName() {
+        if (gameNameField.getText() != null) {
+            return gameNameField.getText();
+        }
+        return "unNamed Game";
+    }
+
+    private String getWName() {
+        if (newPlayerWRadial.isSelected()) {
+            if (wTextField.getText() == null) {
+                return "Anonymous";
+            }
+            return wTextField.getText();
+        } else {
+            return (String) wExistingDropdown.getSelectedItem();
+        }
+    }
+
+    private String getBName() {
+        if (newPlayerBRadial.isSelected()) {
+            if (bTextField.getText() == null) {
+                return "Anonymous";
+            }
+            return bTextField.getText();
+        } else {
+            return (String) bExistingDropdown.getSelectedItem();
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bButtonGroup;
