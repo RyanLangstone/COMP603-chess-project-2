@@ -1,4 +1,6 @@
-package chessproject2;
+package chessproject2.Pieces;
+
+import chessproject2.Game;
 
 /**
  * Child class of piece Has all of the King values and validMoves and special

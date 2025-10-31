@@ -1,5 +1,5 @@
 
-package chessproject2;
+package chessproject2.Pieces;
 
 /**PieceFactory is a factory class that creates chess piece objects based on a given string type
  * 

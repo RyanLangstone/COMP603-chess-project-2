@@ -2,6 +2,7 @@
 package chessproject2;
 
 
+import chessproject2.Pieces.Piece;
 import static chessproject2.Game.blackName;
 import static chessproject2.Game.board;
 import static chessproject2.Game.gameName;

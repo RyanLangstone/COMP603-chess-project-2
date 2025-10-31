@@ -1,6 +1,8 @@
 
 package chessproject2;
 
+import chessproject2.Pieces.Piece;
+
 /**
  * An interface for any object that can move on the chessboard.
  * contract for move validation.

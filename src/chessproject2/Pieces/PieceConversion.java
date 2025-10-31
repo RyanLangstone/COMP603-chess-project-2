@@ -1,5 +1,5 @@
 
-package chessproject2;
+package chessproject2.Pieces;
 
 /**
  * Just used as a way to convert array 00 to chess notation a1

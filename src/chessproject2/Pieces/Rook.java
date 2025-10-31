@@ -1,20 +1,22 @@
-package chessproject2;
+package chessproject2.Pieces;
+
+import chessproject2.Game;
 
 /**
- * *Child class of piece Has all of the Bishop values and validMoves
+ * Child class of piece Has all of the Rook values and validMoves
  *
  */
-public class Bishop extends Piece {
+public class Rook extends Piece {
 
-    public Bishop(boolean isWhite, int row, int column) {
+    public Rook(boolean isWhite, int row, int column) {
         this.isWhite = isWhite;
         this.position[0] = row;
         this.position[1] = column;
-        this.type = "Bishop";
+        this.type = "Rook";
         if (isWhite) {
-            this.unicode = "\u2657";
+            this.unicode = "\u2656";
         } else {
-            this.unicode = "\u265D";
+            this.unicode = "\u265C";
         }
     }
 
@@ -38,9 +40,8 @@ public class Bishop extends Piece {
         int moveCount = 0;
 
         int[][] direction = {
-            {1, 1}, {1, -1}, {-1, 1}, {-1, -1}
+            {1, 0}, {-1, 0}, {0, 1}, {0, -1}
         };
-
         for (int[] dir : direction) {
             int newRow = position[0] + dir[0];
             int newCol = position[1] + dir[1];
@@ -49,7 +50,6 @@ public class Bishop extends Piece {
                 Piece target = board[newRow][newCol];
 
                 if (target == null) {
-
                     if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(newRow, newCol, board))) {
                         possibleMoves[moveCount][0] = newRow;
                         possibleMoves[moveCount][1] = newCol;
@@ -57,7 +57,6 @@ public class Bishop extends Piece {
                     }
                 } else {
                     if (target.isWhite != this.isWhite) {
-
                         if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(newRow, newCol, board))) {
                             possibleMoves[moveCount][0] = newRow;
                             possibleMoves[moveCount][1] = newCol;

@@ -1,20 +1,22 @@
-package chessproject2;
+package chessproject2.Pieces;
+
+import chessproject2.Game;
 
 /**
- * Child class of piece Has all of the Queen values and validMoves
+ * *Child class of piece Has all of the Bishop values and validMoves
  *
  */
-public class Queen extends Piece {
+public class Bishop extends Piece {
 
-    public Queen(boolean isWhite, int row, int column) {
+    public Bishop(boolean isWhite, int row, int column) {
         this.isWhite = isWhite;
         this.position[0] = row;
         this.position[1] = column;
-        this.type = "Queen";
+        this.type = "Bishop";
         if (isWhite) {
-            this.unicode = "\u2655";
+            this.unicode = "\u2657";
         } else {
-            this.unicode = "\u265B";
+            this.unicode = "\u265D";
         }
     }
 
@@ -38,7 +40,6 @@ public class Queen extends Piece {
         int moveCount = 0;
 
         int[][] direction = {
-            {1, 0}, {-1, 0}, {0, 1}, {0, -1}, // rook moves
             {1, 1}, {1, -1}, {-1, 1}, {-1, -1}
         };
 
@@ -50,6 +51,7 @@ public class Queen extends Piece {
                 Piece target = board[newRow][newCol];
 
                 if (target == null) {
+
                     if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(newRow, newCol, board))) {
                         possibleMoves[moveCount][0] = newRow;
                         possibleMoves[moveCount][1] = newCol;
@@ -57,6 +59,7 @@ public class Queen extends Piece {
                     }
                 } else {
                     if (target.isWhite != this.isWhite) {
+
                         if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(newRow, newCol, board))) {
                             possibleMoves[moveCount][0] = newRow;
                             possibleMoves[moveCount][1] = newCol;
@@ -71,7 +74,6 @@ public class Queen extends Piece {
         }
         int[][] validMoves = new int[moveCount][2];
         System.arraycopy(possibleMoves, 0, validMoves, 0, moveCount);
-
         return validMoves;
     }
 

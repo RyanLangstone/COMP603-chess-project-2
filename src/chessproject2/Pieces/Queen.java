@@ -1,20 +1,22 @@
-package chessproject2;
+package chessproject2.Pieces;
+
+import chessproject2.Game;
 
 /**
- * Child class of piece Has all of the Rook values and validMoves
+ * Child class of piece Has all of the Queen values and validMoves
  *
  */
-public class Rook extends Piece {
+public class Queen extends Piece {
 
-    public Rook(boolean isWhite, int row, int column) {
+    public Queen(boolean isWhite, int row, int column) {
         this.isWhite = isWhite;
         this.position[0] = row;
         this.position[1] = column;
-        this.type = "Rook";
+        this.type = "Queen";
         if (isWhite) {
-            this.unicode = "\u2656";
+            this.unicode = "\u2655";
         } else {
-            this.unicode = "\u265C";
+            this.unicode = "\u265B";
         }
     }
 
@@ -38,8 +40,10 @@ public class Rook extends Piece {
         int moveCount = 0;
 
         int[][] direction = {
-            {1, 0}, {-1, 0}, {0, 1}, {0, -1}
+            {1, 0}, {-1, 0}, {0, 1}, {0, -1}, // rook moves
+            {1, 1}, {1, -1}, {-1, 1}, {-1, -1}
         };
+
         for (int[] dir : direction) {
             int newRow = position[0] + dir[0];
             int newCol = position[1] + dir[1];
@@ -69,6 +73,7 @@ public class Rook extends Piece {
         }
         int[][] validMoves = new int[moveCount][2];
         System.arraycopy(possibleMoves, 0, validMoves, 0, moveCount);
+
         return validMoves;
     }
 
