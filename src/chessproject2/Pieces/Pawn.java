@@ -1,5 +1,6 @@
 package chessproject2.Pieces;
 
+import chessproject2.GUI.BoardPanel;
 import chessproject2.Game;
 import java.util.Arrays;
 
@@ -77,7 +78,7 @@ public class Pawn extends Piece {
                     }
                 }
             } else if (column + 1 <= 7 && board[position[0]][column + 1] != null) {
-                if (board[position[0]][column + 1].turnMoved == Game.getTurn() - 1 && board[position[0]][column + 1].isWhite() != isWhite && board[position[0]][column + 1].type == "Pawn") {
+                if (board[position[0]][column + 1].turnMoved ==BoardPanel.turn - 1 && board[position[0]][column + 1].isWhite() != isWhite && board[position[0]][column + 1].type == "Pawn") {
                     if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, isWhite, changeBoard(newRow, column + 1, board, "enPassant"))) {
                         validMoves[moveCount][0] = newRow;
                         validMoves[moveCount][1] = column + 1;
@@ -94,7 +95,7 @@ public class Pawn extends Piece {
                     }
                 }
             } else if (column - 1 >= 0 && board[position[0]][column - 1] != null) {
-                if (board[position[0]][column - 1].turnMoved == Game.getTurn() - 1 && board[position[0]][column - 1].isWhite() != isWhite && board[position[0]][column - 1].type == "Pawn") {
+                if (board[position[0]][column - 1].turnMoved == BoardPanel.turn - 1 && board[position[0]][column - 1].isWhite() != isWhite && board[position[0]][column - 1].type == "Pawn") {
                     if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, isWhite, changeBoard(newRow, column - 1, board, "enPassant"))) {
                         validMoves[moveCount][0] = newRow;
                         validMoves[moveCount][1] = column - 1;

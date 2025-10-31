@@ -5,6 +5,8 @@
 package chessproject2.GUI;
 
 import chessproject2.BoardFileIO;
+import static chessproject2.Game.isCheckmate;
+import static chessproject2.Game.isSquareAttacked;
 import chessproject2.Pieces.Piece;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,6 +14,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -19,7 +22,7 @@ import java.awt.event.MouseEvent;
  */
 public class BoardPanel extends javax.swing.JPanel {
 
-    public int turn;
+    public static int turn;
     private Piece[][] board;
     private final int tileSize = 70;
     private int selectedRow = -1, selectedCol = -1;
@@ -96,8 +99,61 @@ public class BoardPanel extends javax.swing.JPanel {
                 board[toRow][toCol] = piece;
                 board[fromRow][fromCol] = null;
                 piece.setPosition(toRow, toCol);
-                piece.turnMoved = turn;
+               
+
+                //Special rules
+                if (piece.type == "Pawn" && toCol != fromCol && board[toRow][toCol] == null) {
+                    board[fromRow][toCol] = null; //capture the En Passant piece
+                }
+
+                //checks castling
+                if (piece.type == "King" && toCol - fromCol == 2) {
+                    board[toRow][toCol - 1] = board[toRow][7];
+                    board[toRow][toCol - 1].setPosition(toRow, toCol + 1);
+                    board[toRow][7] = null;
+                } else if (piece.type == "King" && toRow - fromCol == -2) {
+                    board[toRow][toCol + 1] = board[toRow][0];
+                    board[toRow][toCol + 1].setPosition(toRow, toCol - 1);
+                    board[toRow][0] = null;
+                }
+                
+                 // === CHECK / CHECKMATE HANDLING ===
+                boolean opponentIsWhite = !piece.isWhite;
+                if (isCheckmate(opponentIsWhite, board)) { // <-- ADDED
+                    String winnerName = piece.isWhite ? "White" : "Black";
+                    String loserName = piece.isWhite ? "Black" : "White";
+                    System.out.println("CHECKMATE! " + winnerName + " wins!");
+                    
+                    break;
+                    //add stuff
+
+                } else {
+                    // Just check
+                    // Find opponent king
+                    int kingRow = -1, kingCol = -1;
+                    for (int r = 0; r < 8; r++) {
+                        for (int c = 0; c < 8; c++) {
+                            Piece p = board[r][c];
+                            if (p != null && p.type.equals("King") && p.isWhite == opponentIsWhite) {
+                                kingRow = r;
+                                kingCol = c;
+                            }
+                        }
+                    }
+                    if (kingRow != -1 && isSquareAttacked(kingRow, kingCol, piece.isWhite, board)) {
+                        System.out.println("CHECK!");
+                    }
+                }
+                
+                 piece.turnMoved = turn;
                 turn++;
+
+                //get top parent frame
+                GameFrame frame = (GameFrame) SwingUtilities.getWindowAncestor(this);
+                //  Safely call the update method
+                if (frame != null) {
+                    frame.updateTurnLabel(turn);
+                }
                 return;
             }
         }

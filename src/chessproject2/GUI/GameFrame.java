@@ -10,14 +10,21 @@ package chessproject2.GUI;
  */
 public class GameFrame extends javax.swing.JFrame {
 
+    private String whitePlayerName;
+    private String blackPlayerName;
+
     /**
-     * 
+     *
      * @param gameName entered name of the game
      * @param whiteName entered white player name
      * @param blackName entered black player name
      */
     public GameFrame(String gameName, String whiteName, String blackName) {
         initComponents();
+        this.whitePlayerName = whiteName;
+        this.blackPlayerName = blackName;
+        gameNameLabel.setText(gameName);
+        updateTurnLabel(0);
     }
 
     /**
@@ -86,6 +93,25 @@ public class GameFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void updateTurnLabel(int currentTurn) {
+
+        String playerName;
+
+        if (currentTurn % 2 == 0) {
+
+            playerName = whitePlayerName != null && !whitePlayerName.isEmpty() ? whitePlayerName : "White";
+
+            turnLabel.setText("Turn: " + playerName);
+
+        } else {
+
+            playerName = blackPlayerName != null && !blackPlayerName.isEmpty() ? blackPlayerName : "Black";
+
+            turnLabel.setText("Turn: " + playerName);
+
+        }
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private chessproject2.GUI.BoardPanel boardPanel;
