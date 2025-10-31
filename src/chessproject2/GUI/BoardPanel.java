@@ -26,6 +26,7 @@ public class BoardPanel extends javax.swing.JPanel {
     private Piece[][] board;
     private final int tileSize = 70;
     private int selectedRow = -1, selectedCol = -1;
+    private final MouseAdapter mouseHandler;
 
     public BoardPanel() {
         this(BoardFileIO.loadDefaultBoard(), 0);    //if new game is created and want to use default borad, this constructor will be called
@@ -36,16 +37,18 @@ public class BoardPanel extends javax.swing.JPanel {
         int count = 0;
         System.out.println("Non-null pieces in board: " + count);
         this.board = board;
-        this.turn = turn;
+        // Assign to the static turn field
+        BoardPanel.turn = turn;
 
-        addMouseListener(new MouseAdapter() {
+        // Corrected: Initialize the final mouseHandler field
+        mouseHandler = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 int row = e.getY() / tileSize; // as white is drawn at bottom
                 int pieceRow = 7 - row;
                 int col = e.getX() / tileSize;
                 Piece piece = board[pieceRow][col];
-                final int currentTurn = BoardPanel.this.turn;
+                final int currentTurn = BoardPanel.turn; // Use the static turn field here
                 if (selectedRow == -1) {
                     //Select a piece
                     if (board[pieceRow][col] != null && (piece.isWhite && currentTurn % 2 == 0 || (!piece.isWhite && currentTurn % 2 == 1))) {
@@ -68,7 +71,10 @@ public class BoardPanel extends javax.swing.JPanel {
                     }
                 }
             }
-        });
+        }; // Semicolon terminates the assignment.
+
+        // Add the initialized handler to the panel.
+        addMouseListener(mouseHandler);
     }
 
     @SuppressWarnings("unchecked")
@@ -99,7 +105,6 @@ public class BoardPanel extends javax.swing.JPanel {
                 board[toRow][toCol] = piece;
                 board[fromRow][fromCol] = null;
                 piece.setPosition(toRow, toCol);
-               
 
                 //Special rules
                 if (piece.type == "Pawn" && toCol != fromCol && board[toRow][toCol] == null) {
@@ -116,14 +121,16 @@ public class BoardPanel extends javax.swing.JPanel {
                     board[toRow][toCol + 1].setPosition(toRow, toCol - 1);
                     board[toRow][0] = null;
                 }
-                
-                 // === CHECK / CHECKMATE HANDLING ===
+
+                // === CHECK / CHECKMATE HANDLING ===
                 boolean opponentIsWhite = !piece.isWhite;
                 if (isCheckmate(opponentIsWhite, board)) { // <-- ADDED
                     String winnerName = piece.isWhite ? "White" : "Black";
                     String loserName = piece.isWhite ? "Black" : "White";
                     System.out.println("CHECKMATE! " + winnerName + " wins!");
-                    
+                    // 1. Remove the mouse listener to prevent further input
+                    removeMouseListener(mouseHandler);
+
                     break;
                     //add stuff
 
@@ -144,8 +151,8 @@ public class BoardPanel extends javax.swing.JPanel {
                         System.out.println("CHECK!");
                     }
                 }
-                
-                 piece.turnMoved = turn;
+
+                piece.turnMoved = turn;
                 turn++;
 
                 //get top parent frame
