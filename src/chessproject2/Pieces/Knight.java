@@ -62,5 +62,8 @@ public class Knight extends Piece {
         }
         return Arrays.copyOf(validMoves, moveCount);
     }
+    public static String getUnicode(boolean isWhite){
+        return isWhite ? "\u2658": "\u265E";
+    }
 
 }

@@ -15,6 +15,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
+import chessproject2.Pieces.PieceFactory;
 
 /**
  *
@@ -94,6 +95,9 @@ public class BoardPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void movePiece(int fromRow, int fromCol, int toRow, int toCol) {
+        //get top parent frame
+        GameFrame frame = (GameFrame) SwingUtilities.getWindowAncestor(this);
+
         Piece piece = board[fromRow][fromCol];
         if (piece == null) {
             return;
@@ -122,6 +126,11 @@ public class BoardPanel extends javax.swing.JPanel {
                     board[toRow][0] = null;
                 }
 
+                if (board[toRow][toCol].type == "Pawn" && ((piece.isWhite && toRow == 7) || (!piece.isWhite && toRow == 0))) {
+                    frame.showPawnPromotion(piece.isWhite, toRow, toCol);
+                    return;
+                }
+
                 // === CHECK / CHECKMATE HANDLING ===
                 boolean opponentIsWhite = !piece.isWhite;
                 if (isCheckmate(opponentIsWhite, board)) { // <-- ADDED
@@ -129,10 +138,11 @@ public class BoardPanel extends javax.swing.JPanel {
                     String loserName = piece.isWhite ? "Black" : "White";
                     System.out.println("CHECKMATE! " + winnerName + " wins!");
                     // 1. Remove the mouse listener to prevent further input
+
                     removeMouseListener(mouseHandler);
+                    frame.gameover(turn % 2 == 0 ? true : false);
 
                     break;
-                    //add stuff
 
                 } else {
                     // Just check
@@ -155,13 +165,12 @@ public class BoardPanel extends javax.swing.JPanel {
                 piece.turnMoved = turn;
                 turn++;
 
-                //get top parent frame
-                GameFrame frame = (GameFrame) SwingUtilities.getWindowAncestor(this);
                 //  Safely call the update method
                 if (frame != null) {
                     frame.updateTurnLabel(turn);
                 }
                 return;
+
             }
         }
     }
@@ -226,6 +235,31 @@ public class BoardPanel extends javax.swing.JPanel {
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(8 * tileSize, 8 * tileSize);
+    }
+
+    public void finalizePawnPromotion(int row, int col, String pieceType) {
+        // 1. Get pawn color and validate
+        Piece oldPawn = board[row][col];
+        if (oldPawn == null || !oldPawn.type.equals("Pawn")) {
+            return;
+        }
+        boolean isWhite = oldPawn.isWhite();
+
+        // 2. Create the new piece and replace the pawn
+        Piece newPiece = PieceFactory.fromType(pieceType, isWhite, row, col);
+        board[row][col] = newPiece;
+
+        // 3. Complete the turn logic
+        newPiece.turnMoved = turn;
+        turn++;
+
+        GameFrame frame = (GameFrame) SwingUtilities.getWindowAncestor(this);
+        if (frame != null) {
+            frame.updateTurnLabel(turn);
+        }
+
+        // 4. Redraw the board to show the promoted piece
+        repaint();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

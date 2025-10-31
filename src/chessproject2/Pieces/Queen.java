@@ -76,5 +76,9 @@ public class Queen extends Piece {
 
         return validMoves;
     }
+    
+    public static String getUnicode(boolean isWhite){
+        return isWhite ? "\u2655": "\u265B";
+    }
 
 }

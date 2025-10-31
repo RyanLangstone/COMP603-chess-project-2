@@ -76,5 +76,9 @@ public class Bishop extends Piece {
         System.arraycopy(possibleMoves, 0, validMoves, 0, moveCount);
         return validMoves;
     }
+    
+    public static String getUnicode(boolean isWhite){
+        return isWhite ? "\u2657": "\u265D";
+    }
 
 }
