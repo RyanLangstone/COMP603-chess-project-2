@@ -77,6 +77,12 @@ public class BoardPanel extends javax.swing.JPanel {
         // Add the initialized handler to the panel.
         addMouseListener(mouseHandler);
     }
+    
+    public void loadBoard(Piece[][] newBoard, int newTurn) {
+        this.board = newBoard;
+        BoardPanel.turn = newTurn; 
+        this.repaint(); 
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

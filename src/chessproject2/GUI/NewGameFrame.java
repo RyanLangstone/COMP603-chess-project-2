@@ -73,7 +73,6 @@ public class NewGameFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Chess Game");
-        setPreferredSize(new java.awt.Dimension(600, 600));
         setSize(new java.awt.Dimension(600, 600));
 
         header.setFont(new java.awt.Font("Stencil", 1, 18)); // NOI18N
@@ -319,7 +318,7 @@ public class NewGameFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_createButtonActionPerformed
 
     private String getGameName() {
-        if (gameNameField.getText() != null) {
+        if (gameNameField.getText() != null && !gameNameField.getText().equals("Enter game name" )) {
             return gameNameField.getText();
         }
         return "unNamed Game";
@@ -327,7 +326,8 @@ public class NewGameFrame extends javax.swing.JFrame {
 
     private String getWName() {
         if (newPlayerWRadial.isSelected()) {
-            if (wTextField.getText() == null) {
+            
+            if (wTextField.getText() == null || wTextField.getText().equals("Enter name here" )) {
                 return "Anonymous";
             }
             return wTextField.getText();
@@ -338,7 +338,7 @@ public class NewGameFrame extends javax.swing.JFrame {
 
     private String getBName() {
         if (newPlayerBRadial.isSelected()) {
-            if (bTextField.getText() == null) {
+            if (bTextField.getText() == null || bTextField.getText().equals("Enter name here" )) {
                 return "Anonymous";
             }
             return bTextField.getText();

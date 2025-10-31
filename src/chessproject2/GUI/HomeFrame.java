@@ -158,15 +158,21 @@ public class HomeFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_newGameButtonActionPerformed
 
     private void gameLogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameLogButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_gameLogButtonActionPerformed
+        GameLogFrame gameLogs = new GameLogFrame();
+        gameLogs.setVisible(true);
+        this.dispose();
+     }//GEN-LAST:event_gameLogButtonActionPerformed
 
     private void loadGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadGameButtonActionPerformed
-        // TODO add your handling code here:
+        LoadGameFrame loadGame = new LoadGameFrame();
+        loadGame.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_loadGameButtonActionPerformed
 
     private void playerStatsButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playerStatsButton1ActionPerformed
-        // TODO add your handling code here:
+        PlayerStatsFrame plasyerStats = new PlayerStatsFrame();
+        plasyerStats.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_playerStatsButton1ActionPerformed
 
     /**

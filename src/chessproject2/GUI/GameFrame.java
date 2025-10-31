@@ -6,6 +6,7 @@ package chessproject2.GUI;
 
 import java.awt.Color;
 import chessproject2.GUI.PawnPromotionPanel.PromotionSelectionListener;
+import chessproject2.Pieces.Piece;
 
 /**
  *
@@ -36,6 +37,19 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
         pawnPromotionPanel2.setVisible(false);
     }
 
+    public GameFrame(String gameName, String whiteName, String blackName, Piece[][] board, int turn) {
+        this.boardPanel = new chessproject2.GUI.BoardPanel(board, turn);
+        initComponents();
+        this.boardPanel.loadBoard(board, turn);
+        this.whitePlayerName = whiteName;
+        this.blackPlayerName = blackName;
+        gameNameLabel.setText(gameName);
+        updateTurnLabel(0);
+        gameOverPanel.setVisible(false);
+        pawnPromotionPanel2.setPromotionSelectionListener(this);
+        pawnPromotionPanel2.setVisible(false);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -52,6 +66,7 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
         pawnPromotionPanel2 = new chessproject2.GUI.PawnPromotionPanel();
         turnLabel = new javax.swing.JLabel();
         gameNameLabel = new javax.swing.JLabel();
+        javax.swing.JButton Back = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(600, 600));
@@ -83,7 +98,7 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
             boardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, boardPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1156, 1156, 1156))
             .addGroup(boardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(boardPanelLayout.createSequentialGroup()
@@ -95,7 +110,7 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
             boardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(boardPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(117, Short.MAX_VALUE))
             .addGroup(boardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(boardPanelLayout.createSequentialGroup()
@@ -112,6 +127,14 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
         gameNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         gameNameLabel.setText("Game Name");
 
+        Back.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        Back.setText("Back");
+        Back.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -120,13 +143,15 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(46, 46, 46)
-                        .addComponent(boardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(Back)
+                                .addGap(80, 80, 80)
+                                .addComponent(turnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(boardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(264, 264, 264)
-                        .addComponent(gameNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(263, 263, 263)
-                        .addComponent(turnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(170, 170, 170)
+                        .addComponent(gameNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(46, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -137,12 +162,20 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(boardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(turnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(turnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Back))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
+        HomeFrame home = new HomeFrame();
+        home.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BackActionPerformed
 
     public void updateTurnLabel(int currentTurn) {
         String playerName;
@@ -186,24 +219,24 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
         jLayeredPane1.revalidate();
         jLayeredPane1.repaint();
     }
-    
+
     @Override
-public void onPieceSelected(String pieceType) {
-    // 1. Hide the promotion panel
-    pawnPromotionPanel2.setVisible(false);
+    public void onPieceSelected(String pieceType) {
+        // 1. Hide the promotion panel
+        pawnPromotionPanel2.setVisible(false);
 
-    // 2. Call the BoardPanel method to finalize the promotion
-    if (promotionRow != -1 && promotionCol != -1) {
-        // boardPanel is the field declared in GameFrame
-        boardPanel.finalizePawnPromotion(promotionRow, promotionCol, pieceType);
+        // 2. Call the BoardPanel method to finalize the promotion
+        if (promotionRow != -1 && promotionCol != -1) {
+            // boardPanel is the field declared in GameFrame
+            boardPanel.finalizePawnPromotion(promotionRow, promotionCol, pieceType);
+        }
+
+        // 3. Reset the stored coordinates for the next promotion
+        promotionRow = -1;
+        promotionCol = -1;
+
+        // The BoardPanel.finalizePawnPromotion handles turn increment and repaint.
     }
-
-    // 3. Reset the stored coordinates for the next promotion
-    promotionRow = -1;
-    promotionCol = -1;
-    
-    // The BoardPanel.finalizePawnPromotion handles turn increment and repaint.
-}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private chessproject2.GUI.BoardPanel boardPanel;
