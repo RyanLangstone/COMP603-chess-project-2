@@ -2,7 +2,7 @@ package chessproject2;
 
 import chessproject2.ChessDB.ReadGameDB;
 import chessproject2.ChessDB.PlayerDB;
-import static chessproject2.PieceConversion.chessNotationToIndex;
+
 import chessproject2.Pieces.Piece;
 import chessproject2.Pieces.PieceConversion;
 import chessproject2.Pieces.PieceFactory;

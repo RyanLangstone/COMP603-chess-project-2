@@ -27,15 +27,26 @@ public class BoardPanel extends javax.swing.JPanel {
     private final int tileSize = 70;
     private int selectedRow = -1, selectedCol = -1;
     private final MouseAdapter mouseHandler;
+    
+    public interface MoveListener {
+        void onMove(String algebraic, int ply, Piece[][] board, int currentTurn);
+    }
+    private MoveListener moveListener;
+    public void setMoveListener(MoveListener l) { this.moveListener = l; }
 
+    public void loadState(Piece[][] board, int turnVal)
+    {
+        this.board = board;
+        BoardPanel.turn = turnVal;
+        repaint();
+    }
+    
     public BoardPanel() {
         this(BoardFileIO.loadDefaultBoard(), 0);    //if new game is created and want to use default borad, this constructor will be called
     }
 
     public BoardPanel(Piece[][] board, int turn) {
         initComponents();
-        int count = 0;
-        System.out.println("Non-null pieces in board: " + count);
         this.board = board;
         // Assign to the static turn field
         BoardPanel.turn = turn;
@@ -102,38 +113,36 @@ public class BoardPanel extends javax.swing.JPanel {
         int[][] validMoves = piece.ValidMoves(board, true);
         for (int[] move : validMoves) {
             if (move[0] == toRow && move[1] == toCol) {
+                String fromSq = toSquare(fromRow, fromCol);
+                String toSq = toSquare(toRow, toCol);
+                
                 board[toRow][toCol] = piece;
                 board[fromRow][fromCol] = null;
                 piece.setPosition(toRow, toCol);
 
                 //Special rules
-                if (piece.type == "Pawn" && toCol != fromCol && board[toRow][toCol] == null) {
+                if ("Piece".equals(piece.type) && toCol != fromCol && board[toRow][toCol] == null) {
                     board[fromRow][toCol] = null; //capture the En Passant piece
                 }
 
                 //checks castling
-                if (piece.type == "King" && toCol - fromCol == 2) {
+                if ("King".equals(piece.type) && toCol - fromCol == 2) {
                     board[toRow][toCol - 1] = board[toRow][7];
-                    board[toRow][toCol - 1].setPosition(toRow, toCol + 1);
+                   if(board[toRow][toCol - 1] != null) board[toRow][toCol - 1].setPosition(toRow, toCol - 1);
                     board[toRow][7] = null;
-                } else if (piece.type == "King" && toRow - fromCol == -2) {
+                } else if ("King".equals(piece.type) && toRow - fromCol == -2) {
                     board[toRow][toCol + 1] = board[toRow][0];
-                    board[toRow][toCol + 1].setPosition(toRow, toCol - 1);
+                    if(board[toRow][toCol + 1] != null) board[toRow][toCol + 1].setPosition(toRow, toCol + 1);
                     board[toRow][0] = null;
                 }
+                
+                
 
                 // === CHECK / CHECKMATE HANDLING ===
                 boolean opponentIsWhite = !piece.isWhite;
                 if (isCheckmate(opponentIsWhite, board)) { // <-- ADDED
-                    String winnerName = piece.isWhite ? "White" : "Black";
-                    String loserName = piece.isWhite ? "Black" : "White";
-                    System.out.println("CHECKMATE! " + winnerName + " wins!");
-                    // 1. Remove the mouse listener to prevent further input
                     removeMouseListener(mouseHandler);
-
-                    break;
-                    //add stuff
-
+                    System.out.println("CHECKMATE! " + (piece.isWhite ? "White" : "Black") + " wins!");
                 } else {
                     // Just check
                     // Find opponent king
@@ -141,7 +150,7 @@ public class BoardPanel extends javax.swing.JPanel {
                     for (int r = 0; r < 8; r++) {
                         for (int c = 0; c < 8; c++) {
                             Piece p = board[r][c];
-                            if (p != null && p.type.equals("King") && p.isWhite == opponentIsWhite) {
+                            if (p != null && "King".equals(p.type) && p.isWhite == opponentIsWhite) {
                                 kingRow = r;
                                 kingCol = c;
                             }
@@ -161,9 +170,21 @@ public class BoardPanel extends javax.swing.JPanel {
                 if (frame != null) {
                     frame.updateTurnLabel(turn);
                 }
+                if(moveListener != null)
+                {
+                    String alg = fromSq + toSq; 
+                    moveListener.onMove(alg, turn, board, turn);
+                }
                 return;
             }
         }
+    }
+    
+    private static String toSquare(int row, int col)
+    {
+        char file = (char) ('a' + col);
+        char rank = (char) ('1' + row);
+        return "" + file + rank;
     }
 
     @Override
@@ -227,6 +248,9 @@ public class BoardPanel extends javax.swing.JPanel {
     public Dimension getPreferredSize() {
         return new Dimension(8 * tileSize, 8 * tileSize);
     }
+    
+    public Piece[][] getBoard() { return board; }
+    public int getTurn() { return turn; }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

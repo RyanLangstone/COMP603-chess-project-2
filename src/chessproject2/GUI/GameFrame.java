@@ -4,6 +4,10 @@
  */
 package chessproject2.GUI;
 
+import chessproject2.ChessDB.BoardStateCodec;
+import chessproject2.ChessDB.SaveGameDB;
+import chessproject2.Game;
+
 /**
  *
  * @author RyanL
@@ -13,6 +17,13 @@ public class GameFrame extends javax.swing.JFrame {
     private String whitePlayerName;
     private String blackPlayerName;
 
+    public GameFrame()
+    {
+        this(Game.gameName, Game.whiteName, Game.blackName);
+        boardPanel.loadState(Game.board, Game.turn);
+        updateTurnLabel(Game.turn);
+    }
+    
     /**
      *
      * @param gameName entered name of the game
@@ -25,6 +36,11 @@ public class GameFrame extends javax.swing.JFrame {
         this.blackPlayerName = blackName;
         gameNameLabel.setText(gameName);
         updateTurnLabel(0);
+        
+        boardPanel.setMoveListener((algebraic, ply, curBoard, curTurn) -> {
+            SaveGameDB.saveMove(Game.gameName, ply, algebraic);
+            SaveGameDB.updateTurnAndBoard(Game.gameName, curTurn, BoardStateCodec.encode(curBoard));
+        });
     }
 
     /**
