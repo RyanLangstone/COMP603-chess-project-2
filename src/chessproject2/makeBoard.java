@@ -1,5 +1,11 @@
 package chessproject2;
 
+import chessproject2.Pieces.Bishop;
+import chessproject2.Pieces.Queen;
+import chessproject2.Pieces.King;
+import chessproject2.Pieces.Rook;
+import chessproject2.Pieces.Knight;
+import chessproject2.Pieces.Pawn;
 import static chessproject2.Game.board;
 
 /**

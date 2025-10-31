@@ -1,5 +1,6 @@
-package chessproject2;
+package chessproject2.Pieces;
 
+import chessproject2.Game;
 import java.util.Arrays;
 
 /**

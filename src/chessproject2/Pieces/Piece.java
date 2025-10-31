@@ -1,4 +1,6 @@
-package chessproject2;
+package chessproject2.Pieces;
+
+import chessproject2.Movable;
 
 /**
  * Abstract piece class that has the universal attributes and methods for all
@@ -8,8 +10,8 @@ package chessproject2;
  */
  public abstract class Piece implements Movable{
 
-    protected String type, unicode;
-    protected boolean isWhite;
+    public String type, unicode;
+    public boolean isWhite;
 
     protected int[] position = new int[2];  // [row,column]
 

@@ -1,6 +1,9 @@
 package chessproject2;
 
-import static chessproject2.PieceConversion.chessNotationToIndex;
+import chessproject2.Pieces.Piece;
+import chessproject2.Pieces.PieceConversion;
+import chessproject2.Pieces.PieceFactory;
+import static chessproject2.Pieces.PieceConversion.chessNotationToIndex;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
