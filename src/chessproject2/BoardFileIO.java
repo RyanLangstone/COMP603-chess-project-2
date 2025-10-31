@@ -4,6 +4,8 @@ import chessproject2.Pieces.Piece;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * BoardFileIO manages creating and loading a default chess board setup
@@ -50,7 +52,12 @@ public class BoardFileIO {
             //Fallback just incase the default file isnt made
             makeBoard.MakeBoard();
             writeDefaultBoard();
-            return ReadBoardFileTest.ReadBoardFile(DEFAULT_FILE);
+            try {
+                return ReadBoardFileTest.ReadBoardFile(DEFAULT_FILE);
+            } catch (IOException ex) {
+                Piece[][] failBoard = new Piece[8][8];
+                return failBoard; //should never happen as above statments write the file, but need it to compile as the file has been declared to throws IOException
+            }
         }
     }
 }

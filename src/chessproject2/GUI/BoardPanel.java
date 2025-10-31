@@ -19,7 +19,7 @@ import java.awt.event.MouseEvent;
  */
 public class BoardPanel extends javax.swing.JPanel {
 
-    public static int turn;
+    public int turn;
     private Piece[][] board;
     private final int tileSize = 70;
     private int selectedRow = -1, selectedCol = -1;
@@ -31,34 +31,38 @@ public class BoardPanel extends javax.swing.JPanel {
     public BoardPanel(Piece[][] board, int turn) {
         initComponents();
         int count = 0;
-for (int r = 0; r < board.length; r++) {
-    for (int c = 0; c < board[r].length; c++) {
-        if (board[r][c] != null) count++;
-    }
-}
-System.out.println("Non-null pieces in board: " + count);
+        System.out.println("Non-null pieces in board: " + count);
         this.board = board;
         this.turn = turn;
 
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                int row = e.getY() / tileSize;
+                int row = e.getY() / tileSize; // as white is drawn at bottom
+                int pieceRow = 7 - row;
                 int col = e.getX() / tileSize;
-
+                Piece piece = board[pieceRow][col];
+                final int currentTurn = BoardPanel.this.turn;
                 if (selectedRow == -1) {
                     //Select a piece
-                    if (board[row][col] != null) {
+                    if (board[pieceRow][col] != null && (piece.isWhite && currentTurn % 2 == 0 || (!piece.isWhite && currentTurn % 2 == 1))) {
                         selectedRow = row;
                         selectedCol = col;
                         repaint();
                     }
                 } else {
                     //Try to move selected piece
-                    movePiece(selectedRow, selectedCol, row, col);
-                    selectedRow = -1;
-                    selectedCol = -1;
-                    repaint();
+
+                    if (board[pieceRow][col] != null && (piece.isWhite && currentTurn % 2 == 0 || (!piece.isWhite && currentTurn % 2 == 1))) {
+                        selectedRow = row;
+                        selectedCol = col;
+                        repaint();
+                    } else {
+                        movePiece(7 - selectedRow, selectedCol, pieceRow, col);
+                        selectedRow = -1;
+                        selectedCol = -1;
+                        repaint();
+                    }
                 }
             }
         });
@@ -103,8 +107,19 @@ System.out.println("Non-null pieces in board: " + count);
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        // 1. Calculate valid moves ONCE if a piece is selected
+        int[][] movesToHighlight = null;
+        if (selectedRow != -1 && selectedCol != -1) {
+            // Remember to use the board-friendly coordinates (0-7 from black to white)
+            Piece selectedPiece = board[7 - selectedRow][selectedCol];
+            if (selectedPiece != null) {
+                movesToHighlight = selectedPiece.ValidMoves(board, true);
+            }
+        }
+
         //Draw the 8x8 board
         for (int row = 0; row < 8; row++) {
+            int pieceRow = 7 - row;
             for (int col = 0; col < 8; col++) {
                 boolean light = (row + col) % 2 == 0;
                 g.setColor(light ? new Color(240, 217, 181) : new Color(181, 136, 99));
@@ -114,10 +129,28 @@ System.out.println("Non-null pieces in board: " + count);
                 if (row == selectedRow && col == selectedCol) {
                     g.setColor(new Color(255, 255, 0, 100));
                     g.fillRect(col * tileSize + 5, row * tileSize + 5, tileSize - 10, tileSize - 10);
+
+                }
+                //highlight valid move squares
+                if (movesToHighlight != null) {
+                    // Check if the current board square (row, col) matches any valid move target
+                    for (int[] move : movesToHighlight) {
+                        // move[0] is board row (0-7), move[1] is board col (0-7)
+                        // The screen row is 7 - move[0] (because the screen draws from top-to-bottom)
+                        int targetScreenRow = 7 - move[0];
+                        int targetScreenCol = move[1];
+
+                        // If the current square being drawn is a valid move target
+                        if (row == targetScreenRow && col == targetScreenCol) {
+                            g.setColor(new Color(0, 255, 0, 100)); // Transparent Green
+                            g.fillRect(col * tileSize + 5, row * tileSize + 5, tileSize - 10, tileSize - 10);
+                            break; // Stop checking valid moves for this square
+                        }
+                    }
                 }
 
                 //Draw piece (if any)
-                Piece piece = board[row][col];
+                Piece piece = board[pieceRow][col];
                 if (piece != null) {
                     g.setFont(new Font("SansSerif", Font.PLAIN, 48));
                     g.setColor(piece.isWhite() ? Color.WHITE : Color.BLACK);
