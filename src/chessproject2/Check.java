@@ -24,7 +24,7 @@ import java.util.Scanner;
 public class Check {
 
     //8x8 chess board, stores Piece objects or nul
-    public static Piece[][] board = new Piece[8][8];
+    
     //Current game metadata
     public static String gameName = ""; //Current game name
     public static String whiteName = ""; // White players name

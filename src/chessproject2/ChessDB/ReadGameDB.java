@@ -3,6 +3,7 @@ package chessproject2.ChessDB;
 
 
 import chessproject2.Check;
+import chessproject2.GUI.BoardPanel;
 import chessproject2.Pieces.PieceFactory;
 import chessproject2.Pieces.Piece;
 import java.sql.*;
@@ -61,13 +62,13 @@ public class ReadGameDB {
     private static void parseBoardState(String boardState)
     {
         if(boardState == null || boardState.trim().isEmpty()) {
-            Check.board = new Piece[8][8]; 
+            BoardPanel.board = new Piece[8][8]; 
             return;
         } 
        
         
         //Reset board
-        Check.board = new Piece[8][8];
+        BoardPanel.board = new Piece[8][8];
         
         //Split by newlines or semicolons to separate rows
         String[] rows = boardState.trim().split("[\\n;]");
@@ -81,7 +82,7 @@ public class ReadGameDB {
                 String token = tokens[col].trim();
                 if(token.equals("(null)"))
                 {
-                    Check.board[row][col] = null;
+                    BoardPanel.board[row][col] = null;
                 } else {
                    token = token.substring(1, token.length() - 1); //remove brackets
                     String[] parts = token.split(",");
@@ -97,7 +98,7 @@ public class ReadGameDB {
                         p.turnMoved = Integer.parseInt(parts[2]);
                     }
                     
-                    Check.board[row][col] = p;
+                    BoardPanel.board[row][col] = p;
                 }
             }
         }

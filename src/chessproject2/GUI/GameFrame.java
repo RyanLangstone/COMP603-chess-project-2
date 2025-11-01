@@ -10,6 +10,7 @@ import chessproject2.ChessDB.SaveGameDB;
 import java.awt.Color;
 import chessproject2.GUI.PawnPromotionPanel.PromotionSelectionListener;
 import chessproject2.Check;
+import chessproject2.ChessDB.PlayerDB;
 import chessproject2.Pieces.Piece;
 
 
@@ -28,7 +29,7 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
     public GameFrame()
     {
         this(Check.gameName, Check.whiteName, Check.blackName);
-        boardPanel.loadState(Check.board, Check.turn);
+        boardPanel.loadState(BoardPanel.board, Check.turn);
         updateTurnLabel(Check.turn);
     }
     
@@ -54,9 +55,9 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
            SaveGameDB.updateTurnAndBoard(Check.gameName, curTurn, BoardStateCodec.encode(curBoard));
          });
         //If Check.* already holds a board (new game flow), show it
-        if(Check.board != null)
+        if(BoardPanel.board != null)
         {
-            boardPanel.loadState(Check.board, Check.turn);
+            boardPanel.loadState(BoardPanel.board, Check.turn);
         }
     }
 
@@ -199,6 +200,8 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
     }// </editor-fold>//GEN-END:initComponents
 
     
+    
+    
     private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
         HomeFrame home = new HomeFrame();
         home.setVisible(true);
@@ -271,8 +274,23 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
     
     private chessproject2.Pieces.Piece[][] boardPanelBoard()
     {
-        return Check.board;
+        return BoardPanel.board;
     }
+    
+    public void setWins(boolean isWhite)
+    {
+        if(isWhite)
+        {
+            PlayerDB.updateWins(whitePlayerName);
+            PlayerDB.updateLosses(blackPlayerName);
+        } else {
+             PlayerDB.updateWins(blackPlayerName);
+            PlayerDB.updateLosses(whitePlayerName);
+        }
+    }
+    
+    
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private chessproject2.GUI.BoardPanel boardPanel;
