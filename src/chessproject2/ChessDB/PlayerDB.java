@@ -88,5 +88,57 @@ public class PlayerDB {
           throw new RuntimeException(e);
       }
     }
+    
+  /**
+     * Increments the 'wins' count for a specified player in the database.
+     * Uses a single UPDATE statement for efficiency.
+     * @param name The name of the player whose wins should be incremented.
+     */
+    public static void updateWins(String name)
+    {
+        Connection conn = ChessDatabase.getConnection();
+        
+        // SQL to directly increment the 'wins' column by 1 for the player
+        String sql = "UPDATE players SET wins = wins + 1 WHERE name = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql))
+        {
+            
+            ps.setString(1, name);
+       
+            
+            int rowsAffected = ps.executeUpdate();
+            
+            if (rowsAffected == 0) {
+               
+                System.out.println("Warning: Player '" + name + "' not found to update wins.");
+            }
+
+        } catch (SQLException e)
+        {
+            // Wrap the SQL exception in a runtime exception for consistent error handling
+            throw new RuntimeException("Failed to update wins for player: " + name, e);
+        }
+    }
+    
+    // You should also consider adding a corresponding updateLosses(String name) method:
+    /**
+     * Increments the 'losses' count for a specified player in the database.
+     * @param name The name of the player whose losses should be incremented.
+     */
+     public static void updateLosses(String name)
+    {
+        Connection conn = ChessDatabase.getConnection();
+        String sql = "UPDATE players SET losses = losses + 1 WHERE name = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql))
+        {
+            ps.setString(1, name);
+            ps.executeUpdate();
+        } catch (SQLException e)
+        {
+            throw new RuntimeException("Failed to update losses for player: " + name, e);
+        }
+    }
 }
 

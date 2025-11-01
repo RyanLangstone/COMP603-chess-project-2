@@ -1,7 +1,5 @@
 package chessproject2.Pieces;
 
-import chessproject2.Movable;
-
 /**
  * Abstract piece class that has the universal attributes and methods for all
  * the piece subclasses e.g Pawn, Rook, Bishop etc Methods are public or
@@ -66,13 +64,13 @@ import chessproject2.Movable;
                 }
             }
         }
-        if (specialMove == "enPassant") {
+        if (specialMove.equals("enPassant")) {
             newBoard[this.position[0]][newCol] = null;
-        } else if (specialMove == "ksCastle") {  //king side castle
+        } else if (specialMove.equals("ksCastle")) {  //king side castle
             // moves the rook
             newBoard[position[0]][5] = newBoard[position[0]][7];
             newBoard[position[0]][7] = null;
-        } else if (specialMove == "qsCastle") {  //queen side castle
+        } else if (specialMove.equals("qsCastle")) {  //queen side castle
             // moves the rook
             newBoard[position[0]][3] = newBoard[position[0]][0];
             newBoard[position[0]][0] = null;

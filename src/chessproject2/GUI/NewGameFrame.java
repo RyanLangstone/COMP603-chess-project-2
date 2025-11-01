@@ -97,6 +97,7 @@ public class NewGameFrame extends javax.swing.JFrame {
 
         wTextField.setText("enter name here");
         wTextField.setToolTipText("enter name here");
+        wTextField.setMinimumSize(new java.awt.Dimension(101, 22));
         wTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 wTextFieldActionPerformed(evt);
@@ -121,7 +122,7 @@ public class NewGameFrame extends javax.swing.JFrame {
                     .addGroup(wPannelLayout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addComponent(whitePlayerLabel)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
         );
         wPannelLayout.setVerticalGroup(
             wPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,6 +154,7 @@ public class NewGameFrame extends javax.swing.JFrame {
 
         bTextField.setText("enter name here");
         bTextField.setToolTipText("enter name here");
+        bTextField.setMinimumSize(new java.awt.Dimension(101, 22));
         bTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bTextFieldActionPerformed(evt);
@@ -179,7 +181,7 @@ public class NewGameFrame extends javax.swing.JFrame {
                     .addGroup(bPannelLayout.createSequentialGroup()
                         .addGap(63, 63, 63)
                         .addComponent(blackPlayerLabel)))
-                .addGap(0, 160, Short.MAX_VALUE))
+                .addGap(160, 160, 160))
         );
         bPannelLayout.setVerticalGroup(
             bPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -346,12 +348,12 @@ public class NewGameFrame extends javax.swing.JFrame {
 
         // --- FIX 2: (See below) ---
         // Use the correct, non-broken method to create the board
-        Check.board = BoardStateCodec.initialBoardArray();
+        BoardPanel.board = BoardStateCodec.initialBoardArray();
 
         //Persist into DB so later Load Check uses ReadGameDB
         // --- FIX 3 & 4: (See below) ---
         // Use the correct encoder that saves all required data
-        SaveGameDB.saveOrUpdateGame(gName, wName, bName, 0, BoardStateCodec.encode(Check.board));
+        SaveGameDB.saveOrUpdateGame(gName, wName, bName, 0, BoardStateCodec.encode(BoardPanel.board));
 
         //Launch the Check UI
         GameFrame home = new GameFrame(gName, wName, bName);

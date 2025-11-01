@@ -51,7 +51,6 @@
                       <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="loadGameButton" min="-2" pref="136" max="-2" attributes="0"/>
-                          <Component id="viewInstructionsButton" min="-2" pref="136" max="-2" attributes="0"/>
                           <Component id="newGameButton" alignment="1" min="-2" pref="136" max="-2" attributes="0"/>
                           <Component id="playerStatsButton1" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="gameLogButton" alignment="1" min="-2" pref="136" max="-2" attributes="0"/>
@@ -67,9 +66,7 @@
           <Group type="102" attributes="0">
               <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
               <Component id="homeLabel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
-              <Component id="viewInstructionsButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="117" max="-2" attributes="0"/>
               <Component id="loadGameButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Component id="newGameButton" min="-2" max="-2" attributes="0"/>
@@ -90,24 +87,6 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Chess Game Home"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="viewInstructionsButton">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="14" style="0"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="View instructions"/>
-        <Property name="toolTipText" type="java.lang.String" value=""/>
-        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[150, 27]"/>
-        </Property>
-        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[150, 27]"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewInstructionsButtonActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="loadGameButton">
       <Properties>

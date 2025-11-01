@@ -25,7 +25,7 @@ import chessproject2.Pieces.PieceFactory;
 public class BoardPanel extends javax.swing.JPanel {
 
     public static int turn;
-    private Piece[][] board;
+    public static Piece[][] board = new Piece[8][8];
     private final int tileSize = 70;
     private int selectedRow = -1, selectedCol = -1;
     private final MouseAdapter mouseHandler;
@@ -44,7 +44,52 @@ public class BoardPanel extends javax.swing.JPanel {
     }
     
     public BoardPanel() {
-        this(BoardStateCodec.initialBoardArray(), 0);    //if new game is created and want to use default board, this constructor will be called
+        //this(BoardStateCodec.initialBoardArray(), 0);    //if new game is created and want to use default board, this constructor will be called
+        
+        // FIXED: The default constructor must NOT initialize the static board.
+        // The static BoardPanel.board and BoardPanel.turn fields are set *before*
+        // this constructor is called (either by NewGameFrame for a new game,
+        // or by ReadGameDB for a loaded game).
+        // Calling this(BoardStateCodec.initialBoardArray(), 0) would overwrite
+        // the loaded game state with a new board.
+        
+        initComponents();
+
+        // Corrected: Initialize the final mouseHandler field
+        mouseHandler = new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                int row = e.getY() / tileSize; // as white is drawn at bottom
+                int pieceRow = 7 - row;
+                int col = e.getX() / tileSize;
+                Piece piece = board[pieceRow][col];
+                final int currentTurn = BoardPanel.turn; // Use the static turn field here
+                if (selectedRow == -1) {
+                    //Select a piece
+                    if (piece != null && (piece.isWhite && currentTurn % 2 == 0 || (!piece.isWhite && currentTurn % 2 == 1))) {
+                        selectedRow = row;
+                        selectedCol = col;
+                        repaint();
+                    }
+                } else {
+                    //Try to move selected piece
+
+                    if (piece != null && (piece.isWhite && currentTurn % 2 == 0 || (!piece.isWhite && currentTurn % 2 == 1))) {
+                        selectedRow = row;
+                        selectedCol = col;
+                        repaint();
+                    } else {
+                        movePiece(7 - selectedRow, selectedCol, pieceRow, col);
+                        selectedRow = -1;
+                        selectedCol = -1;
+                        repaint();
+                    }
+                }
+            }
+        }; // Semicolon terminates the assignment.
+
+        // Add the initialized handler to the panel.
+        addMouseListener(mouseHandler);
     }
 
     public BoardPanel(Piece[][] board, int turn) {
@@ -89,7 +134,6 @@ public class BoardPanel extends javax.swing.JPanel {
         // Add the initialized handler to the panel.
         addMouseListener(mouseHandler);
     }
-    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -122,15 +166,13 @@ public class BoardPanel extends javax.swing.JPanel {
                 String fromSq = toSquare(fromRow, fromCol);
                 String toSq = toSquare(toRow, toCol);
                 
-                board[toRow][toCol] = piece;
-                board[fromRow][fromCol] = null;
-                piece.setPosition(toRow, toCol);
+             
 
                 //Special rules
-                if ("Pawn".equals(piece.type) && toCol != fromCol && board[toRow][toCol] == null) {
+                if (piece.type == "Pawn" && toCol != fromCol && board[toRow][toCol] == null) {
                     board[fromRow][toCol] = null; //capture the En Passant piece
                 }
-
+  
                 //checks castling
                 if ("King".equals(piece.type) && toCol - fromCol == 2) {
                     board[toRow][toCol - 1] = board[toRow][7];
@@ -142,6 +184,9 @@ public class BoardPanel extends javax.swing.JPanel {
                     board[toRow][0] = null;
                 }
                 
+                 board[toRow][toCol] = piece;
+                board[fromRow][fromCol] = null;
+                piece.setPosition(toRow, toCol);
                 
                     //Pawn Promotion entry (shows panel and stops flow here; persistence after selection
                 if ("Pawn".equals(board[toRow][toCol].type) && ((piece.isWhite && toRow == 7) || (!piece.isWhite && toRow == 0))) {
@@ -155,8 +200,10 @@ public class BoardPanel extends javax.swing.JPanel {
                     String winnerName = piece.isWhite ? "White" : "Black";
                     String loserName = piece.isWhite ? "Black" : "White";
                     System.out.println("CHECKMATE! " + winnerName + " wins!");
+                    frame.setWins(piece.isWhite);
+                    
                     // 1. Remove the mouse listener to prevent further input
-
+                    
                     removeMouseListener(mouseHandler);
                    if(frame != null) frame.gameover(turn % 2 == 0 ? true : false);
                    
