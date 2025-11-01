@@ -1,7 +1,7 @@
 package chessproject2;
 
 import chessproject2.Pieces.PieceFactory;
-import static chessproject2.Game.board; //Import the shared board object from Game
+import static chessproject2.Check.board; //Import the shared board object from Check
 import chessproject2.Pieces.Piece;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -40,22 +40,22 @@ public class ReadBoardFileTest {
 
                 // Handles metadata lines
                 if (line.startsWith("#GameName: ")) {
-                    Game.gameName = line.substring(11).trim(); //Extracts game name
+                    Check.gameName = line.substring(11).trim(); //Extracts game name
                     continue;
                 }
 
                 if (line.startsWith("#WhitePlayer: ")) {
-                    Game.whiteName = line.substring(14).trim(); //Extract white players name
+                    Check.whiteName = line.substring(14).trim(); //Extract white players name
                     continue;
                 }
 
                 if (line.startsWith("#BlackPlayer: ")) {
-                    Game.blackName = line.substring(14).trim(); //Extract black players name 
+                    Check.blackName = line.substring(14).trim(); //Extract black players name 
                     continue;
                 }
 
                 if (line.startsWith("#Turn: ")) {
-                    Game.turn = Integer.parseInt(line.substring(7).trim()); //Extract current turn
+                    Check.turn = Integer.parseInt(line.substring(7).trim()); //Extract current turn
                     continue;
                 }
 

@@ -1,6 +1,8 @@
 package chessproject2;
 
+import chessproject2.ChessDB.ReadGameDB;
 import chessproject2.Pieces.Piece;
+import chessproject2.Pieces.PieceFactory;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,48 +18,39 @@ import java.util.logging.Logger;
  *
  *
  */
-public class BoardFileIO {
-
-    private static final String DEFAULT_FILE = "default.txt";
-
-    public static void writeDefaultBoard() {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(DEFAULT_FILE, false))) {
-            //White back rank
-            pw.println("(Rook,true)(Knight,true)(Bishop,true)(Queen,true)(King,true)(Bishop,true)(Knight,true)(Rook,true)");
-
-            //White front rank
-            pw.println("(Pawn,true)(Pawn,true)(Pawn,true)(Pawn,true)(Pawn,true)(Pawn,true)(Pawn,true)(Pawn,true)");
-            for (int i = 0; i < 4; i++) {
-                //Empty rows
-                pw.println("(null)(null)(null)(null)(null)(null)(null)(null)");
+public final class BoardFileIO {
+            private BoardFileIO() {}
+            
+            //Returns the standard chess starting position. No DB/File IO
+            public static Piece[][] loadDefaultBoard()
+            {
+                Piece[][] b = new Piece[8][8];
+                //White back rank
+                b[0][0] = PieceFactory.fromType("Rook",   true, 0, 0);
+                b[0][1] = PieceFactory.fromType("Knight", true, 0, 1);
+                b[0][2] = PieceFactory.fromType("Bishop", true, 0, 2);
+                b[0][3] = PieceFactory.fromType("Queen",  true, 0, 3);
+                b[0][4] = PieceFactory.fromType("King",   true, 0, 4);
+                b[0][5] = PieceFactory.fromType("Bishop", true, 0, 5);
+                b[0][6] = PieceFactory.fromType("Knight", true, 0, 6);
+                b[0][7] = PieceFactory.fromType("Rook",   true, 0, 7);
+                
+                //White pawns
+                for (int c = 0; c < 8; c++) b[1][c] = PieceFactory.fromType("Pawn", true, 1, c);
+                
+                //Black Pawns 
+                for (int c = 0; c < 8; c++) b[6][c] = PieceFactory.fromType("Pawn", false, 6, c);
+                
+                //Black back rank
+                b[0][0] = PieceFactory.fromType("Rook",   false, 7, 0);
+                b[0][1] = PieceFactory.fromType("Knight", false, 7, 1);
+                b[0][2] = PieceFactory.fromType("Bishop", false, 7, 2);
+                b[0][3] = PieceFactory.fromType("Queen",  false, 7, 3);
+                b[0][4] = PieceFactory.fromType("King",   false, 7, 4);
+                b[0][5] = PieceFactory.fromType("Bishop", false, 7, 5);
+                b[0][6] = PieceFactory.fromType("Knight", false, 7, 6);
+                b[0][7] = PieceFactory.fromType("Rook",   false, 7, 7);
+                
+                return b;
             }
-            //Black front rank
-            pw.println("(Pawn,false)(Pawn,false)(Pawn,false)(Pawn,false)(Pawn,false)(Pawn,false)(Pawn,false)(Pawn,false)");
-
-            //Black back rank
-            pw.println("(Rook,false)(Knight,false)(Bishop,false)(Queen,false)(King,false)(Bishop,false)(Knight,false)(Rook,false)");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    //Loads the default board from default.txt
-    //If the file doesnt exist, it prints a warning and calls makeBoard.MakeBoard to manually generate it and writes a new default.txt for future use
-    public static Piece[][] loadDefaultBoard() {
-        try {
-            return ReadBoardFileTest.ReadBoardFile(DEFAULT_FILE); //Tries loading default board from the file
-        } catch (Exception e) {
-            System.out.println("default.txt not found, generating board manually...");
-            //Fallback just incase the default file isnt made
-            makeBoard.MakeBoard();
-            writeDefaultBoard();
-            try {
-                return ReadBoardFileTest.ReadBoardFile(DEFAULT_FILE);
-            } catch (IOException ex) {
-                Piece[][] failBoard = new Piece[8][8];
-                return failBoard; //should never happen as above statments write the file, but need it to compile as the file has been declared to throws IOException
-            }
-        }
-    }
 }

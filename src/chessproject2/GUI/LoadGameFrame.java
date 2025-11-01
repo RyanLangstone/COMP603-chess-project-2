@@ -4,6 +4,14 @@
  */
 package chessproject2.GUI;
 
+import chessproject2.ChessDB.ChessDatabase;
+import chessproject2.ChessDB.ReadGameDB;
+import chessproject2.ChessDB.SaveGameDB;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import java.sql.*;
+
 /**
  *
  * @author RyanL
@@ -15,6 +23,9 @@ public class LoadGameFrame extends javax.swing.JFrame {
      */
     public LoadGameFrame() {
         initComponents();
+        setTitle("Load Game");
+        setLocationRelativeTo(null);
+        populateGameList();
         //load in combo box of all the loaded games
     }
 
@@ -134,6 +145,34 @@ public class LoadGameFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void populateGameList()
+    {
+        List<String> games = SaveGameDB.listGameNames();
+        saveGameComboBox.removeAllItems();
+       for (String g : games) saveGameComboBox.addItem(g);
+       if(!games.isEmpty())
+       {
+           saveGameComboBox.setSelectedIndex(0);
+           updateMetaLabels(games.get(0));
+       } else {
+            whiteNameValueLabel.setText("-");
+            blackNameValueLabel.setText("-");
+       }
+    }
+    
+    private void updateMetaLabels(String gameName)
+    {
+        ReadGameDB.GameMeta meta = ReadGameDB.fetchGameMeta(gameName);
+        if(meta == null)
+        {
+            whiteNameValueLabel.setText("-");
+            blackNameValueLabel.setText("-");
+        } else {
+            whiteNameValueLabel.setText(meta.white);
+            blackNameValueLabel.setText(meta.black);
+        }
+    }
+    
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         HomeFrame home = new HomeFrame();
         home.setVisible(true);
@@ -141,15 +180,22 @@ public class LoadGameFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
-//        GameFrame home = new GameFrame(getGameName(), getWName(), getBName(), board(), turn);
-//        home.setVisible(true);
-//        this.dispose();
+        String sel = (String) saveGameComboBox.getSelectedItem();
+        if (sel == null) return;
+        boolean ok = ReadGameDB.loadGame(sel);
+        if(!ok)
+        {
+            JOptionPane.showMessageDialog(this, "Failed to load: " + sel);
+            return;
+        }
+        GameFrame gf = new GameFrame();
+        gf.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_loadButtonActionPerformed
 
     private void saveGameComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveGameComboBoxActionPerformed
-        // TODO add your handling code here:
-//        whiteNameValueLabel.setText(wName);
-//        blackNameValueLabel.setText(bName);
+            String sel = (String) saveGameComboBox.getSelectedItem();
+            if (sel != null) updateMetaLabels(sel);
     }//GEN-LAST:event_saveGameComboBoxActionPerformed
 
     /**

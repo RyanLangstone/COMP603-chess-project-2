@@ -1,7 +1,7 @@
 package chessproject2.Pieces;
 
 import chessproject2.GUI.BoardPanel;
-import chessproject2.Game;
+import chessproject2.Check;
 import java.util.Arrays;
 
 /**
@@ -48,7 +48,7 @@ public class Pawn extends Piece {
         int newRow = position[0] + direction;
         int column = position[1];
         if (newRow >= 0 && newRow <= 7 && board[newRow][column] == null) {
-            if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(newRow, column, board))) { // because java doesnt does short-circuit evaluation, the long isSquareAttacked will only be called when needed
+            if (checkDiscoved == false || !Check.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(newRow, column, board))) { // because java doesnt does short-circuit evaluation, the long isSquareAttacked will only be called when needed
                 //Forward movements
                 validMoves[moveCount][0] = newRow;
                 validMoves[moveCount][1] = column;
@@ -57,7 +57,7 @@ public class Pawn extends Piece {
             if (position[0] == startRow) {
                 int twoRow = position[0] + 2 * direction;
                 if (twoRow >= 0 && twoRow <= 7 && board[twoRow][position[1]] == null) {
-                    if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(twoRow, column, board))) {
+                    if (checkDiscoved == false || !Check.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(twoRow, column, board))) {
                         //fist double move
                         validMoves[moveCount][0] = twoRow;
                         validMoves[moveCount][1] = column;
@@ -71,7 +71,7 @@ public class Pawn extends Piece {
             // capture movments + En Passant
             if (column + 1 <= 7 && board[newRow][column + 1] != null) {
                 if (board[newRow][column + 1].isWhite() != isWhite) {
-                    if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, isWhite, changeBoard(newRow, column + 1, board))) {
+                    if (checkDiscoved == false || !Check.isSquareAttacked(kingRow, kingCol, isWhite, changeBoard(newRow, column + 1, board))) {
                         validMoves[moveCount][0] = newRow;
                         validMoves[moveCount][1] = column + 1;
                         moveCount++;
@@ -79,7 +79,7 @@ public class Pawn extends Piece {
                 }
             } else if (column + 1 <= 7 && board[position[0]][column + 1] != null) {
                 if (board[position[0]][column + 1].turnMoved ==BoardPanel.turn - 1 && board[position[0]][column + 1].isWhite() != isWhite && board[position[0]][column + 1].type == "Pawn") {
-                    if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, isWhite, changeBoard(newRow, column + 1, board, "enPassant"))) {
+                    if (checkDiscoved == false || !Check.isSquareAttacked(kingRow, kingCol, isWhite, changeBoard(newRow, column + 1, board, "enPassant"))) {
                         validMoves[moveCount][0] = newRow;
                         validMoves[moveCount][1] = column + 1;
                         moveCount++;
@@ -88,7 +88,7 @@ public class Pawn extends Piece {
             }
             if (column - 1 >= 0 && board[newRow][column - 1] != null) {
                 if (board[newRow][column - 1].isWhite() != isWhite) {
-                    if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, isWhite, changeBoard(newRow, column - 1, board))) {
+                    if (checkDiscoved == false || !Check.isSquareAttacked(kingRow, kingCol, isWhite, changeBoard(newRow, column - 1, board))) {
                         validMoves[moveCount][0] = newRow;
                         validMoves[moveCount][1] = column - 1;
                         moveCount++;
@@ -96,7 +96,7 @@ public class Pawn extends Piece {
                 }
             } else if (column - 1 >= 0 && board[position[0]][column - 1] != null) {
                 if (board[position[0]][column - 1].turnMoved == BoardPanel.turn - 1 && board[position[0]][column - 1].isWhite() != isWhite && board[position[0]][column - 1].type == "Pawn") {
-                    if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, isWhite, changeBoard(newRow, column - 1, board, "enPassant"))) {
+                    if (checkDiscoved == false || !Check.isSquareAttacked(kingRow, kingCol, isWhite, changeBoard(newRow, column - 1, board, "enPassant"))) {
                         validMoves[moveCount][0] = newRow;
                         validMoves[moveCount][1] = column - 1;
                         moveCount++;
