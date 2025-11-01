@@ -1,9 +1,8 @@
 package chessproject2;
 
-import chessproject2.Pieces.Piece;
-import chessproject2.Pieces.PieceConversion;
-import chessproject2.Pieces.PieceFactory;
-import static chessproject2.Pieces.PieceConversion.chessNotationToIndex;
+import chessproject2.ChessDB.ReadGameDB;
+import chessproject2.ChessDB.PlayerDB;
+import static chessproject2.PieceConversion.chessNotationToIndex;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
@@ -50,8 +49,8 @@ public class Game {
         //Ensures console supports UTF-8 so unicode chess pieces render in correctly
         System.setOut(new PrintStream(System.out, true, "UTF-8"));
 
-        //Loads existing players from PlayerFileIO
-        HashMap<String, Player> players = PlayerFileIO.loadPlayers();
+        //Loads existing players from PlayerDB
+        HashMap<String, Player> players = PlayerDB.loadPlayers();
 
         //Writes and loads the default starting chess board
         BoardFileIO.writeDefaultBoard();
@@ -101,7 +100,7 @@ public class Game {
                     if (savePath == null || savePath.equals("BACK")) {
                         continue mainMenuLoop; //Returns to the top if there are no saved games
                     }
-                    ReadBoardFileTest.ReadBoardFile(savePath);
+                    ReadGameDB.ReadBoardFile(savePath);
                     break; //starts the game from the loaded save file
                 } else if (option == 3) {
                     //Starts a new game
@@ -294,7 +293,7 @@ public class Game {
 
             }
             //Saves players after creation
-            PlayerFileIO.savePlayers(players);
+            PlayerDB.savePlayers(player);
         }
 
         //Gameplay loop
@@ -550,7 +549,7 @@ public class Game {
                     if (players.containsKey(loserName)) {
                         players.get(loserName).addLosses();
                     }
-                    PlayerFileIO.savePlayers(players);
+                    PlayerDB.savePlayers(player);
                     break;
                     //add stuff
 
