@@ -10,6 +10,7 @@ import chessproject2.ChessDB.SaveGameDB;
 import java.awt.Color;
 import chessproject2.GUI.PawnPromotionPanel.PromotionSelectionListener;
 import chessproject2.Check;
+import chessproject2.ChessDB.PlayerDB;
 import chessproject2.Pieces.Piece;
 
 
@@ -199,6 +200,8 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
     }// </editor-fold>//GEN-END:initComponents
 
     
+    
+    
     private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
         HomeFrame home = new HomeFrame();
         home.setVisible(true);
@@ -273,6 +276,21 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
     {
         return BoardPanel.board;
     }
+    
+    public void setWins(boolean isWhite)
+    {
+        if(isWhite)
+        {
+            PlayerDB.updateWins(whitePlayerName);
+            PlayerDB.updateLosses(blackPlayerName);
+        } else {
+             PlayerDB.updateWins(blackPlayerName);
+            PlayerDB.updateLosses(whitePlayerName);
+        }
+    }
+    
+    
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private chessproject2.GUI.BoardPanel boardPanel;
