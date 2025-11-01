@@ -4,6 +4,12 @@
  */
 package chessproject2.GUI;
 
+import chessproject2.ChessDB.ChessDatabase;
+import chessproject2.ChessDB.ReadGameDB;
+import chessproject2.ChessDB.SaveGameDB;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author RyanL
@@ -142,10 +148,12 @@ public class HomeFrame extends javax.swing.JFrame {
 
     private void viewInstructionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewInstructionsButtonActionPerformed
         // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "How to Play.... (Update this later, found in HomeFrame.java under viewInstructionsButton)");
     }//GEN-LAST:event_viewInstructionsButtonActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        loadGameButtonActionPerformed(evt);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void newGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameButtonActionPerformed
@@ -158,32 +166,37 @@ public class HomeFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_newGameButtonActionPerformed
 
     private void gameLogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameLogButtonActionPerformed
-        GameLogFrame gameLogs = new GameLogFrame();
-        gameLogs.setVisible(true);
-        this.dispose();
+       GameLogFrame f = new GameLogFrame();
+       f.setVisible(true);
+       this.dispose();
      }//GEN-LAST:event_gameLogButtonActionPerformed
 
     private void loadGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadGameButtonActionPerformed
-        LoadGameFrame loadGame = new LoadGameFrame();
-        loadGame.setVisible(true);
-        this.dispose();
+      LoadGameFrame f = new LoadGameFrame();
+      f.setVisible(true);
+      this.dispose();
     }//GEN-LAST:event_loadGameButtonActionPerformed
 
     private void playerStatsButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playerStatsButton1ActionPerformed
-        PlayerStatsFrame plasyerStats = new PlayerStatsFrame();
-        plasyerStats.setVisible(true);
-        this.dispose();
+      PlayerStatsFrame f = new PlayerStatsFrame();
+      f.setVisible(true);
+      this.dispose();
     }//GEN-LAST:event_playerStatsButton1ActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
+       
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+        
+        ChessDatabase.init();
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {

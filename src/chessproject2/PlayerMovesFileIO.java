@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Creates the folder for the playermoves .txt files to be saved into 
  * 
- */
+ */ /*
 public class PlayerMovesFileIO {
    private static final String MOVES_FOLDER = "moves";
    
@@ -70,3 +70,4 @@ public class PlayerMovesFileIO {
        return moves;
    }
 }
+*/
