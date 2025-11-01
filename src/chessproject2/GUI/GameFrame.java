@@ -4,9 +4,11 @@
  */
 package chessproject2.GUI;
 
+
 import java.awt.Color;
 import chessproject2.GUI.PawnPromotionPanel.PromotionSelectionListener;
 import chessproject2.Pieces.Piece;
+
 
 /**
  *
@@ -20,6 +22,13 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
     private int promotionRow = -1;
     private int promotionCol = -1;
 
+    public GameFrame()
+    {
+        this(Game.gameName, Game.whiteName, Game.blackName);
+        boardPanel.loadState(Game.board, Game.turn);
+        updateTurnLabel(Game.turn);
+    }
+    
     /**
      *
      * @param gameName entered name of the game
@@ -32,6 +41,7 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
         this.blackPlayerName = blackName;
         gameNameLabel.setText(gameName);
         updateTurnLabel(0);
+
         gameOverPanel.setVisible(false);
         pawnPromotionPanel2.setPromotionSelectionListener(this);
         pawnPromotionPanel2.setVisible(false);
@@ -48,6 +58,7 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
         gameOverPanel.setVisible(false);
         pawnPromotionPanel2.setPromotionSelectionListener(this);
         pawnPromotionPanel2.setVisible(false);
+
     }
 
     /**

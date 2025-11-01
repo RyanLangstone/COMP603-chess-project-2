@@ -76,7 +76,7 @@ public class PlayerDB {
           if(affected == 0)
           {
               PreparedStatement insert = conn.prepareStatement(
-              "INSERT INTO players(name, wins losses) VALUES (?,?,?)"
+              "INSERT INTO players(name, wins, losses) VALUES (?,?,?)"
               );
               insert.setString(1, player.getName());
               insert.setInt(2, player.getWins());

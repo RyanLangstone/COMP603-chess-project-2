@@ -4,6 +4,12 @@
  */
 package chessproject2.GUI;
 
+import chessproject2.ChessDB.ChessDatabase;
+import chessproject2.ChessDB.ReadGameDB;
+import chessproject2.ChessDB.SaveGameDB;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author RyanL
@@ -142,10 +148,12 @@ public class HomeFrame extends javax.swing.JFrame {
 
     private void viewInstructionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewInstructionsButtonActionPerformed
         // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "How to Play.... (Update this later, found in HomeFrame.java under viewInstructionsButton)");
     }//GEN-LAST:event_viewInstructionsButtonActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        loadGameButtonActionPerformed(evt);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void newGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameButtonActionPerformed
@@ -184,6 +192,9 @@ public class HomeFrame extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+        
+        ChessDatabase.init();
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {

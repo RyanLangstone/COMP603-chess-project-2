@@ -3,8 +3,8 @@ package chessproject2.ChessDB;
 
 
 import chessproject2.Game;
-import chessproject2.PieceFactory;
-import chessproject2.Piece;
+import chessproject2.Pieces.PieceFactory;
+import chessproject2.Pieces.Piece;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
