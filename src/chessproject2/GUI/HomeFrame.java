@@ -166,17 +166,20 @@ public class HomeFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_newGameButtonActionPerformed
 
     private void gameLogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameLogButtonActionPerformed
-        new GameLogFrame().setVisible(true);
-        this.dispose();
+       GameLogFrame f = new GameLogFrame();
+       f.setVisible(true);
+       this.dispose();
      }//GEN-LAST:event_gameLogButtonActionPerformed
 
     private void loadGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadGameButtonActionPerformed
-      new LoadGameFrame().setVisible(true);
+      LoadGameFrame f = new LoadGameFrame();
+      f.setVisible(true);
       this.dispose();
     }//GEN-LAST:event_loadGameButtonActionPerformed
 
     private void playerStatsButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playerStatsButton1ActionPerformed
-      new PlayerStatsFrame().setVisible(true);
+      PlayerStatsFrame f = new PlayerStatsFrame();
+      f.setVisible(true);
       this.dispose();
     }//GEN-LAST:event_playerStatsButton1ActionPerformed
 

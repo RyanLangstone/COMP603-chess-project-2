@@ -5,6 +5,7 @@
 package chessproject2.GUI;
 
 import chessproject2.BoardFileIO;
+import chessproject2.BoardStateUtil;
 import chessproject2.ChessDB.BoardStateCodec;
 import chessproject2.Player;
 import chessproject2.ChessDB.PlayerDB;
@@ -327,7 +328,7 @@ public class NewGameFrame extends javax.swing.JFrame {
         Check.board = BoardFileIO.loadDefaultBoard();
         
         //Persist into DB so later Load Check uses ReadGameDB
-        SaveGameDB.saveOrUpdateGame(gName, wName, bName, 0, BoardStateCodec.encode(Check.board));
+        SaveGameDB.saveOrUpdateGame(gName, wName, bName, 0, BoardStateUtil.boardToState(Check.board));
         
         //Launch the Check UI
         GameFrame home = new GameFrame(gName, wName, bName);

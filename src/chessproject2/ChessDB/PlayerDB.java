@@ -4,6 +4,7 @@ package chessproject2.ChessDB;
 import chessproject2.Player;
 import java.sql.*;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * PlayerDB handles reading and writing player data from/to a database
@@ -27,7 +28,7 @@ public class PlayerDB {
         
         Connection conn = ChessDatabase.getConnection();
         try (Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT name,wins,losses FROM players"))
+        ResultSet rs = stmt.executeQuery("SELECT name,wins,losses FROM players ORDER BY name"))
         {
             while (rs.next())
             {
@@ -59,34 +60,33 @@ public class PlayerDB {
     2. Merge new player data into existing ones
     3. Overwirtes players.txt with the merged list
     */
-    public static void savePlayers(Player player)
+    public static void savePlayers(Map<String, Player> players)
     {
      Connection conn = ChessDatabase.getConnection();
       
           //Try update first
         try (PreparedStatement update = conn.prepareStatement(
                   "UPDATE players SET wins=?, losses=? WHERE name=?"
-          )) {
-          update.setInt(1, player.getWins());
-          update.setInt(2, player.getLosses());
-          update.setString(3, player.getName());
-          int affected = update.executeUpdate();
-          
-          //If no rows are updated, insert the values
-          if(affected == 0)
-          {
-            try (PreparedStatement insert = conn.prepareStatement(
+          );
+             PreparedStatement insert = conn.prepareStatement(
               "INSERT INTO players(name, wins, losses) VALUES (?,?,?)"
               )) {
-              insert.setString(1, player.getName());
-              insert.setInt(2, player.getWins());
-              insert.setInt(3, player.getLosses());
-              insert.executeUpdate();
+            for (Player p : players.values()) {
+                update.setInt(1, p.getWins());
+                update.setInt(2, p.getLosses());
+                update.setString(3, p.getName());
+                int n = update.executeUpdate();
+                if (n == 0) {
+                    insert.setString(1, p.getName());
+                    insert.setInt(2, p.getWins());
+                    insert.setInt(3, p.getLosses());
+                    insert.executeUpdate();
           }
           }
       } catch (SQLException e)
       {
-          e.printStackTrace();
+          throw new RuntimeException(e);
       }
     }
 }
+

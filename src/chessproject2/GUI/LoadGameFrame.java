@@ -148,53 +148,31 @@ public class LoadGameFrame extends javax.swing.JFrame {
     private void populateGameList()
     {
         List<String> games = SaveGameDB.listGameNames();
-        if (games.isEmpty())
-        {
-            saveGameComboBox.setModel(new DefaultComboBoxModel<>(new String[]{}));
-            saveGameComboBox.setEnabled(false);
-            loadButton.setEnabled(false);
-            whiteNameValueLabel.setText("No games");
-            blackNameValueLabel.setText("No games");
-            JOptionPane.showMessageDialog(this, "No saved games found.");
-            return;
-        }
-        saveGameComboBox.setEnabled(true);
-        loadButton.setEnabled(true);
-        saveGameComboBox.setModel(new DefaultComboBoxModel<>(games.toArray(new String[0])));
-        saveGameComboBox.setSelectedIndex(0);
-        previewSelected();
+        saveGameComboBox.removeAllItems();
+       for (String g : games) saveGameComboBox.addItem(g);
+       if(!games.isEmpty())
+       {
+           saveGameComboBox.setSelectedIndex(0);
+           updateMetaLabels(games.get(0));
+       } else {
+            whiteNameValueLabel.setText("-");
+            blackNameValueLabel.setText("-");
+       }
     }
     
-    private void previewSelected()
+    private void updateMetaLabels(String gameName)
     {
-        Object sel = saveGameComboBox.getSelectedItem();
-        if(sel == null)
+        ReadGameDB.GameMeta meta = ReadGameDB.fetchGameMeta(gameName);
+        if(meta == null)
         {
             whiteNameValueLabel.setText("-");
             blackNameValueLabel.setText("-");
-            return;
+        } else {
+            whiteNameValueLabel.setText(meta.white);
+            blackNameValueLabel.setText(meta.black);
         }
-        String gameName = sel.toString();
-        try (Connection conn = ChessDatabase.getConnection();
-                PreparedStatement ps = conn.prepareStatement(
-                "SELECT white_player, black_player FROM games WHERE game_name=?")) {
-            ps.setString(1, gameName);
-            try(ResultSet rs = ps.executeQuery())
-            {
-                if(rs.next())
-                {
-                    whiteNameValueLabel.setText(rs.getString(1));
-                    blackNameValueLabel.setText(rs.getString(2));
-                } else {
-                    whiteNameValueLabel.setText("-");
-                    blackNameValueLabel.setText("-");
-                }
-            }
-        } catch (SQLException e)
-        {
-            JOptionPane.showMessageDialog(this, "Failed to preview game meta.\n" + e.getMessage(), "DB Error", JOptionPane.ERROR_MESSAGE);
     }
-    }
+    
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         HomeFrame home = new HomeFrame();
         home.setVisible(true);
@@ -202,17 +180,12 @@ public class LoadGameFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
-        Object sel = saveGameComboBox.getSelectedItem();
-        if(sel == null)
-        {
-            JOptionPane.showMessageDialog(this, "Select a game first.");
-            return;
-        }
-        String gameName = sel.toString();
-        boolean ok = ReadGameDB.loadGame(gameName);
+        String sel = (String) saveGameComboBox.getSelectedItem();
+        if (sel == null) return;
+        boolean ok = ReadGameDB.loadGame(sel);
         if(!ok)
         {
-            JOptionPane.showMessageDialog(this, "Failed to load: " +gameName);
+            JOptionPane.showMessageDialog(this, "Failed to load: " + sel);
             return;
         }
         GameFrame gf = new GameFrame();
@@ -221,8 +194,8 @@ public class LoadGameFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_loadButtonActionPerformed
 
     private void saveGameComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveGameComboBoxActionPerformed
-            if (!saveGameComboBox.isEnabled()) return;
-            previewSelected();
+            String sel = (String) saveGameComboBox.getSelectedItem();
+            if (sel != null) updateMetaLabels(sel);
     }//GEN-LAST:event_saveGameComboBoxActionPerformed
 
     /**

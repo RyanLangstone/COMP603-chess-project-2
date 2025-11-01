@@ -18,7 +18,6 @@ public class SaveGameDB {
     {
         Connection conn = ChessDatabase.getConnection();
        try {
-            int n;
            try (PreparedStatement upd = conn.prepareStatement("""
                        UPDATE games SET white_player=?, black_player=?, board_state=?, turn=? WHERE game_name=?
             """)) {
@@ -28,12 +27,12 @@ public class SaveGameDB {
             upd.setString(3, boardState); 
             upd.setInt(4, turn);
             upd.setString(5, gameName);
-            n =  upd.executeUpdate();
-           }
+            int n =  upd.executeUpdate();
+           
          if(n == 0)
          {
            try  (PreparedStatement ins = conn.prepareStatement("""                              
-             INSERT INTO games(game_name, white_player, black_player, turn, board_state) VALUES (?, ?, ?, ?, ?)
+             INSERT INTO games(game_name, white_player, black_player, turn, board_state, created_at) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
               """)) {
              ins.setString(1, gameName);
              ins.setString(2, white);
@@ -43,6 +42,7 @@ public class SaveGameDB {
              ins.executeUpdate();
            }
          }
+        }
     } catch (SQLException e)
         {
             throw new RuntimeException(e);
@@ -52,7 +52,7 @@ public class SaveGameDB {
     public static void updateTurnAndBoard(String gameName, int turn, String boardState)
     {
        Connection conn = ChessDatabase.getConnection();
-        {
+        
           try (PreparedStatement ps = conn.prepareStatement("""
                            UPDATE games SET turn=?, board_state=? WHERE game_name=?
              """)) {
@@ -65,7 +65,7 @@ public class SaveGameDB {
            throw new RuntimeException(e);
         }
     }
-    }
+
      public static void saveMove(String gameName, int moveNumber, String moveText)
     {
         Connection conn = ChessDatabase.getConnection();
@@ -87,7 +87,7 @@ public class SaveGameDB {
      {
          Connection conn = ChessDatabase.getConnection();
          List<String> out = new ArrayList<>();
-         try (PreparedStatement ps = conn.prepareStatement("SELECT game_name FROM games ORDER BY created_at DESC");
+         try (PreparedStatement ps = conn.prepareStatement("SELECT game_name FROM games ORDER BY created_at DESC, game_name ASC");
                  ResultSet rs = ps.executeQuery()) {
        
              while(rs.next()) out.add(rs.getString(1));

@@ -60,7 +60,11 @@ public class ReadGameDB {
     */
     private static void parseBoardState(String boardState)
     {
-        if(boardState == null || boardState.isEmpty()) return;
+        if(boardState == null || boardState.trim().isEmpty()) {
+            Check.board = new Piece[8][8]; 
+            return;
+        } 
+       
         
         //Reset board
         Check.board = new Piece[8][8];
@@ -89,6 +93,33 @@ public class ReadGameDB {
         }
     }
     
+    public static class GameMeta
+    {
+        public final String white;
+        public final String black;
+        public final int turn;
+        public GameMeta(String w, String b, int t) {this.white = w; this.black = b; this.turn = t;}
+    }
+    
+    public static GameMeta fetchGameMeta(String gameName)
+    {
+        Connection conn = ChessDatabase.getConnection();
+        try (PreparedStatement ps = conn.prepareStatement("""
+                                             SELECT white_player, black_player, turn FROM games WHERE game_name=?             
+                                                          """
+        )) {
+            ps.setString(1, gameName);
+            try (ResultSet rs = ps.executeQuery())
+            {
+                if(!rs.next()) return null;
+                return new GameMeta(rs.getString(1), rs.getString(2), rs.getInt(3));
+            }
+        } catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+    
     public static List<String> loadMoves(String gameName)
     {
         Connection conn = ChessDatabase.getConnection();
@@ -101,7 +132,7 @@ public class ReadGameDB {
             
             while(rs.next())
             {
-                moves.add(rs.getString("move_text"));
+                moves.add(rs.getInt(1) + ". " + rs.getString(2));
             }
            }
         } catch (SQLException e)

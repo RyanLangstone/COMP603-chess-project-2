@@ -73,7 +73,8 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
 
         boardPanel.setMoveListener((algebraic,ply,curBoard,curTurn) -> {
            SaveGameDB.saveMove(Check.gameName, ply, algebraic); 
-           SaveGameDB.updateTurnAndBoard(Check.gameName, curTurn, BoardStateCodec.encode(curBoard));
+           String state = chessproject2.BoardStateUtil.boardToState(curBoard);
+           SaveGameDB.updateTurnAndBoard(Check.gameName, curTurn, state);
          });
     }
 
@@ -198,6 +199,7 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
     private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
         HomeFrame home = new HomeFrame();
         home.setVisible(true);
