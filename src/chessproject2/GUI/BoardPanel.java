@@ -25,7 +25,7 @@ import chessproject2.Pieces.PieceFactory;
 public class BoardPanel extends javax.swing.JPanel {
 
     public static int turn;
-    private Piece[][] board;
+    public static Piece[][] board = new Piece[8][8];
     private final int tileSize = 70;
     private int selectedRow = -1, selectedCol = -1;
     private final MouseAdapter mouseHandler;

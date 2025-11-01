@@ -34,7 +34,6 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jButton3 = new javax.swing.JButton();
         homeLabel = new javax.swing.JLabel();
-        viewInstructionsButton = new javax.swing.JButton();
         loadGameButton = new javax.swing.JButton();
         newGameButton = new javax.swing.JButton();
         gameLogButton = new javax.swing.JButton();
@@ -53,22 +52,10 @@ public class HomeFrame extends javax.swing.JFrame {
         setTitle("Chess game");
         setAutoRequestFocus(false);
         setLocationByPlatform(true);
-        setPreferredSize(new java.awt.Dimension(600, 600));
         setSize(new java.awt.Dimension(600, 600));
 
         homeLabel.setFont(new java.awt.Font("Stencil", 1, 18)); // NOI18N
         homeLabel.setText("Chess Game Home");
-
-        viewInstructionsButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        viewInstructionsButton.setText("View instructions");
-        viewInstructionsButton.setToolTipText("");
-        viewInstructionsButton.setMaximumSize(new java.awt.Dimension(150, 27));
-        viewInstructionsButton.setMinimumSize(new java.awt.Dimension(150, 27));
-        viewInstructionsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewInstructionsButtonActionPerformed(evt);
-            }
-        });
 
         loadGameButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         loadGameButton.setText("Play Saved file");
@@ -118,7 +105,6 @@ public class HomeFrame extends javax.swing.JFrame {
                         .addGap(17, 17, 17)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(loadGameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(viewInstructionsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(newGameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(playerStatsButton1)
                             .addComponent(gameLogButton, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -129,9 +115,7 @@ public class HomeFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addComponent(homeLabel)
-                .addGap(70, 70, 70)
-                .addComponent(viewInstructionsButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
+                .addGap(117, 117, 117)
                 .addComponent(loadGameButton)
                 .addGap(20, 20, 20)
                 .addComponent(newGameButton)
@@ -145,11 +129,6 @@ public class HomeFrame extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void viewInstructionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewInstructionsButtonActionPerformed
-        // TODO add your handling code here:
-        JOptionPane.showMessageDialog(this, "How to Play.... (Update this later, found in HomeFrame.java under viewInstructionsButton)");
-    }//GEN-LAST:event_viewInstructionsButtonActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
@@ -230,6 +209,5 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JButton loadGameButton;
     private javax.swing.JButton newGameButton;
     private javax.swing.JButton playerStatsButton1;
-    private javax.swing.JButton viewInstructionsButton;
     // End of variables declaration//GEN-END:variables
 }

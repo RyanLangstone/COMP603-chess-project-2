@@ -28,7 +28,7 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
     public GameFrame()
     {
         this(Check.gameName, Check.whiteName, Check.blackName);
-        boardPanel.loadState(Check.board, Check.turn);
+        boardPanel.loadState(BoardPanel.board, Check.turn);
         updateTurnLabel(Check.turn);
     }
     
@@ -54,9 +54,9 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
            SaveGameDB.updateTurnAndBoard(Check.gameName, curTurn, BoardStateCodec.encode(curBoard));
          });
         //If Check.* already holds a board (new game flow), show it
-        if(Check.board != null)
+        if(BoardPanel.board != null)
         {
-            boardPanel.loadState(Check.board, Check.turn);
+            boardPanel.loadState(BoardPanel.board, Check.turn);
         }
     }
 
@@ -271,7 +271,7 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
     
     private chessproject2.Pieces.Piece[][] boardPanelBoard()
     {
-        return Check.board;
+        return BoardPanel.board;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
