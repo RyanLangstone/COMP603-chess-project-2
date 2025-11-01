@@ -72,8 +72,7 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
         pawnPromotionPanel2.setVisible(false);
 
         boardPanel.setMoveListener((algebraic,ply,curBoard,curTurn) -> {
-           SaveGameDB.saveMove(Check.gameName, ply, algebraic); 
-           String state = chessproject2.BoardStateUtil.boardToState(curBoard);
+           String state = chessproject2.ChessDB.BoardStateCodec.encode(curBoard);
            SaveGameDB.updateTurnAndBoard(Check.gameName, curTurn, state);
          });
     }

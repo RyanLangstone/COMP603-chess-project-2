@@ -83,11 +83,21 @@ public class ReadGameDB {
                 {
                     Check.board[row][col] = null;
                 } else {
-                    token = token.substring(1, token.length() - 1); //remove brackets
+                   token = token.substring(1, token.length() - 1); //remove brackets
                     String[] parts = token.split(",");
                     String type = parts[0];
                     boolean isWhite = Boolean.parseBoolean(parts[1]);
-                    Check.board[row][col] = PieceFactory.fromType(type, isWhite, row, col);
+                    
+                    // Create the piece
+                    Piece p = PieceFactory.fromType(type, isWhite, row, col);
+                    
+                    // Check if turnMoved data exists and load it
+                    // This keeps it compatible with old saves that only had 2 parts
+                    if (parts.length > 2) {
+                        p.turnMoved = Integer.parseInt(parts[2]);
+                    }
+                    
+                    Check.board[row][col] = p;
                 }
             }
         }

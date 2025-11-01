@@ -320,16 +320,39 @@ public class NewGameFrame extends javax.swing.JFrame {
         String gName = getGameName();
         String wName = getWName();
         String bName = getBName();
+        
+        // --- FIX 1: SAVE NEW PLAYERS ---
+        // Load existing players from the database
+        HashMap<String, Player> players = PlayerDB.loadPlayers();
+
+        // If the white player is new, add them to the map
+        if (!players.containsKey(wName)) {
+            players.put(wName, new Player(wName));
+        }
+        // If the black player is new, add them to the map
+        if (!players.containsKey(bName)) {
+            players.put(bName, new Player(bName));
+        }
+
+        // Save the updated player map back to the database
+        PlayerDB.savePlayers(players);
+        // --- END FIX 1 ---
+
         //Initialize global game state for the new game
         Check.gameName = gName;
         Check.whiteName = wName;
         Check.blackName = bName;
         Check.turn = 0;
-        Check.board = BoardFileIO.loadDefaultBoard();
-        
+
+        // --- FIX 2: (See below) ---
+        // Use the correct, non-broken method to create the board
+        Check.board = BoardStateCodec.initialBoardArray();
+
         //Persist into DB so later Load Check uses ReadGameDB
-        SaveGameDB.saveOrUpdateGame(gName, wName, bName, 0, BoardStateUtil.boardToState(Check.board));
-        
+        // --- FIX 3 & 4: (See below) ---
+        // Use the correct encoder that saves all required data
+        SaveGameDB.saveOrUpdateGame(gName, wName, bName, 0, BoardStateCodec.encode(Check.board));
+
         //Launch the Check UI
         GameFrame home = new GameFrame(gName, wName, bName);
         home.setVisible(true);
@@ -337,7 +360,7 @@ public class NewGameFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_createButtonActionPerformed
 
     private String getGameName() {
-        if (gameNameField.getText() != null && !gameNameField.getText().equals("Enter game name" )) {
+        if (gameNameField.getText() != null && !gameNameField.getText().equals("Enter game name")) {
             return gameNameField.getText();
         }
         return "unNamed Game";
@@ -345,8 +368,8 @@ public class NewGameFrame extends javax.swing.JFrame {
 
     private String getWName() {
         if (newPlayerWRadial.isSelected()) {
-            
-            if (wTextField.getText() == null || wTextField.getText().equals("Enter name here" )) {
+
+            if (wTextField.getText() == null || wTextField.getText().equals("Enter name here")) {
                 return "Anonymous";
             }
             return wTextField.getText();
@@ -357,7 +380,7 @@ public class NewGameFrame extends javax.swing.JFrame {
 
     private String getBName() {
         if (newPlayerBRadial.isSelected()) {
-            if (bTextField.getText() == null || bTextField.getText().equals("Enter name here" )) {
+            if (bTextField.getText() == null || bTextField.getText().equals("Enter name here")) {
                 return "Anonymous";
             }
             return bTextField.getText();
