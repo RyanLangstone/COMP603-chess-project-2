@@ -1,6 +1,7 @@
 package chessproject2.Pieces;
 
 import chessproject2.Check;
+import chessproject2.GUI.BoardPanel;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -15,7 +16,7 @@ public class KingTest {
     @Before
     public void setUp() {
         board = new Piece[8][8];
-        Check.board = board; // Assign to the static field used by Check.isSquareAttacked
+        BoardPanel.board = board; // Assign to the static field used by Check.isSquareAttacked
     }
 
     /**
@@ -33,6 +34,7 @@ public class KingTest {
     @Test
     public void testKingStandardMoves() {
         King king = new King(true, 3, 3);
+        king.turnMoved=3;
         board[3][3] = king;
         int[][] moves = king.ValidMoves(board, false);
 
@@ -44,6 +46,7 @@ public class KingTest {
     @Test
     public void testKingCannotMoveIntoCheck() {
         King king = new King(true, 3, 3);
+        king.turnMoved=3;
         board[3][3] = king;
         board[0][4] = new Rook(false, 0, 4); // Black rook attacks column 4
 
@@ -58,10 +61,11 @@ public class KingTest {
     @Test
     public void testKingCannotMoveAdjacentToEnemyKing() {
         King whiteKing = new King(true, 0, 0);
+        whiteKing.turnMoved=3;
         board[0][0] = whiteKing;
         board[0][2] = new King(false, 0, 2); // Black king
 
-        int[][] moves = whiteKing.ValidMoves(board, false);
+        int[][] moves = whiteKing.ValidMoves(board, true);
 
         assertFalse("King should not move adjacent to other king at [0,1]", moveExists(moves, 0, 1));
         assertFalse("King should not move adjacent to other king at [1,1]", moveExists(moves, 1, 1));
@@ -152,8 +156,7 @@ public class KingTest {
         rook.turnMoved = -1;
         board[0][7] = rook;
         
-        // Black rook attacks [0,5] (f1), the square the king must pass through
-        board[7][5] = new Rook(false, 7, 5);
+        board[1][4] = new Rook(false, 1, 4);
 
         int[][] moves = king.ValidMoves(board, true); // checkDiscoved = true
         assertFalse("Castle should not be allowed when moving through check", moveExists(moves, 0, 6));

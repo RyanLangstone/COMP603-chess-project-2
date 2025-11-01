@@ -18,7 +18,7 @@ public class CheckTest {
         // Create a new empty board for each test
         board = new Piece[8][8];
         // Since Check.board is static, we must assign our test board to it
-        Check.board = board; 
+        BoardPanel.board = board; 
     }
 
     // --- isSquareAttacked Tests ---
@@ -135,21 +135,21 @@ public class CheckTest {
         board[0][4] = new King(true, 0, 4); // White King
         board[0][4].turnMoved = 2;
         board[7][4] = new King(false, 7, 4); // Black King
-        board[7][4].turnMoved = 2;
+        board[7][4].turnMoved = 3;
         
-        board[1][5] = new Pawn(true, 1, 5); // f2
-        board[1][6] = new Pawn(true, 1, 6); // g2
-        // White moves f2->f3
-        board[2][5] = new Pawn(true, 1, 3);
-        // White moves g2->g4
+        board[1][3] = new Pawn(true, 1, 3); //row of pawns infront of king
+        board[1][5] = new Pawn(true, 1, 5); 
+        board[1][4] = new Pawn(true, 1, 4); 
+        
+       
         board[3][6] = new Pawn(true, 3, 6);
         
-        board[6][4] = new Pawn(false, 6, 4); // e7
+        board[6][4] = new Pawn(false, 6, 4); 
         // Black moves e7->e5
         board[4][4] = new Pawn(false, 4, 4);
         
         // Black Queen delivers mate
-        board[3][7] = new Queen(false, 0, 7); // Qh4
+        board[0][7] = new Queen(false, 0, 7); 
 
         // It is White's turn, and White is in checkmate
         assertTrue("This should be Mate", Check.isCheckmate(true, board));

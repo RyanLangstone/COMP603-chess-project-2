@@ -16,7 +16,7 @@ public class PawnTest {
     @Before
     public void setUp() {
         board = new Piece[8][8];
-        Check.board = board; // Assign to the static field
+        BoardPanel.board = board; // Assign to the static field
         BoardPanel.turn = 0; // Reset static turn counter
     }
 
@@ -93,9 +93,9 @@ public class PawnTest {
     public void testPawnMoveLeavesKingInCheck() {
         // Pinned pawn
         board[0][4] = new King(true, 0, 4);
-        Pawn pawn = new Pawn(true, 1, 4); // Pawn directly in front of king
-        board[1][4] = pawn;
-        board[7][4] = new Rook(false, 7, 4); // Black rook pinning the pawn
+        Pawn pawn = new Pawn(true, 1, 3); // Pawn diagonaly in front of king
+        board[1][3] = pawn;
+        board[3][1] = new Bishop(false, 2, 2); // Black Bishop pinning the pawn
 
         int[][] moves = pawn.ValidMoves(board, true); // checkDiscoved = true
         

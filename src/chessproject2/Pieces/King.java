@@ -41,7 +41,7 @@ public class King extends Piece {
         int moveCount = 0;
 
         int[][] direction = {
-            {-1, 1}, {-1, 0}, {-1, 1}, //diagonal + up
+            {-1, -1}, {-1, 0}, {-1, 1}, //diagonal + up
             {0, -1}, {0, 1}, //left, right
             {1, -1}, {1, 0}, {1, 1} //diagonal + down
         };
@@ -57,7 +57,7 @@ public class King extends Piece {
                 Piece target = board[newRow][newCol];
 
                 if (target == null || target.isWhite != this.isWhite) {
-                    if (checkDiscoved == false || !Check.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(newRow, newCol, board))) {
+                    if (checkDiscoved == false || !Check.isSquareAttacked(newRow, newCol, !isWhite, changeBoard(newRow, newCol, board))) {
                         possibleMoves[moveCount][0] = newRow;
                         possibleMoves[moveCount][1] = newCol;
                         moveCount++;
