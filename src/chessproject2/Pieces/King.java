@@ -1,6 +1,6 @@
 package chessproject2.Pieces;
 
-import chessproject2.Game;
+import chessproject2.Check;
 
 /**
  * Child class of piece Has all of the King values and validMoves and special
@@ -57,7 +57,7 @@ public class King extends Piece {
                 Piece target = board[newRow][newCol];
 
                 if (target == null || target.isWhite != this.isWhite) {
-                    if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(newRow, newCol, board))) {
+                    if (checkDiscoved == false || !Check.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(newRow, newCol, board))) {
                         possibleMoves[moveCount][0] = newRow;
                         possibleMoves[moveCount][1] = newCol;
                         moveCount++;
@@ -69,7 +69,7 @@ public class King extends Piece {
         if (turnMoved == -1) {
             if (board[row][0] != null) {
                 if (board[row][0].turnMoved == -1 && board[row][1] == null && board[row][2] == null && board[row][3] == null) {
-                    if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(row, col - 2, board, "qsCastle"))) {
+                    if (checkDiscoved == false || !Check.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(row, col - 2, board, "qsCastle"))) {
                         possibleMoves[moveCount][0] = row;
                         possibleMoves[moveCount][1] = col - 2;
                         moveCount++;
@@ -78,7 +78,7 @@ public class King extends Piece {
             }
             if (board[row][7] != null) {
                 if (board[row][7].turnMoved == -1 && board[row][6] == null && board[row][5] == null) {
-                    if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(row, col + 2, board, "ksCastle"))) {
+                    if (checkDiscoved == false || !Check.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(row, col + 2, board, "ksCastle"))) {
                         possibleMoves[moveCount][0] = row;
                         possibleMoves[moveCount][1] = col + 2;
                         moveCount++;

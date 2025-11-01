@@ -1,6 +1,6 @@
 package chessproject2.Pieces;
 
-import chessproject2.Game;
+import chessproject2.Check;
 
 /**
  * Child class of piece Has all of the Rook values and validMoves
@@ -50,14 +50,14 @@ public class Rook extends Piece {
                 Piece target = board[newRow][newCol];
 
                 if (target == null) {
-                    if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(newRow, newCol, board))) {
+                    if (checkDiscoved == false || !Check.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(newRow, newCol, board))) {
                         possibleMoves[moveCount][0] = newRow;
                         possibleMoves[moveCount][1] = newCol;
                         moveCount++;
                     }
                 } else {
                     if (target.isWhite != this.isWhite) {
-                        if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(newRow, newCol, board))) {
+                        if (checkDiscoved == false || !Check.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(newRow, newCol, board))) {
                             possibleMoves[moveCount][0] = newRow;
                             possibleMoves[moveCount][1] = newCol;
                             moveCount++;

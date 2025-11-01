@@ -9,7 +9,7 @@ import chessproject2.ChessDB.BoardStateCodec;
 import chessproject2.Player;
 import chessproject2.ChessDB.PlayerDB;
 import chessproject2.ChessDB.SaveGameDB;
-import chessproject2.Game;
+import chessproject2.Check;
 import java.util.HashMap;
 
 /**
@@ -320,16 +320,16 @@ public class NewGameFrame extends javax.swing.JFrame {
         String wName = getWName();
         String bName = getBName();
         //Initialize global game state for the new game
-        Game.gameName = gName;
-        Game.whiteName = wName;
-        Game.blackName = bName;
-        Game.turn = 0;
-        Game.board = BoardFileIO.loadDefaultBoard();
+        Check.gameName = gName;
+        Check.whiteName = wName;
+        Check.blackName = bName;
+        Check.turn = 0;
+        Check.board = BoardFileIO.loadDefaultBoard();
         
-        //Persist into DB so later Load Game uses ReadGameDB
-        SaveGameDB.saveOrUpdateGame(gName, wName, bName, 0, BoardStateCodec.encode(Game.board));
+        //Persist into DB so later Load Check uses ReadGameDB
+        SaveGameDB.saveOrUpdateGame(gName, wName, bName, 0, BoardStateCodec.encode(Check.board));
         
-        //Launch the Game UI
+        //Launch the Check UI
         GameFrame home = new GameFrame(gName, wName, bName);
         home.setVisible(true);
         this.dispose();

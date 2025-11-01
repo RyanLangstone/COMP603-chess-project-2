@@ -6,8 +6,8 @@ package chessproject2.GUI;
 
 import chessproject2.BoardFileIO;
 import chessproject2.ChessDB.BoardStateCodec;
-import static chessproject2.Game.isCheckmate;
-import static chessproject2.Game.isSquareAttacked;
+import static chessproject2.Check.isCheckmate;
+import static chessproject2.Check.isSquareAttacked;
 import chessproject2.Pieces.Piece;
 import java.awt.Color;
 import java.awt.Dimension;

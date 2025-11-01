@@ -3,11 +3,11 @@ package chessproject2;
 
 
 import chessproject2.Pieces.Piece;
-import static chessproject2.Game.blackName;
-import static chessproject2.Game.board;
-import static chessproject2.Game.gameName;
-import static chessproject2.Game.turn;
-import static chessproject2.Game.whiteName;
+import static chessproject2.Check.blackName;
+import static chessproject2.Check.board;
+import static chessproject2.Check.gameName;
+import static chessproject2.Check.turn;
+import static chessproject2.Check.whiteName;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

@@ -2,7 +2,7 @@
 package chessproject2.ChessDB;
 
 
-import chessproject2.Game;
+import chessproject2.Check;
 import chessproject2.Pieces.PieceFactory;
 import chessproject2.Pieces.Piece;
 import java.sql.*;
@@ -37,13 +37,13 @@ public class ReadGameDB {
         }
         
         //Extract metadata
-        Game.gameName = gameName;
-        Game.whiteName = rs.getString("white_player");
-        Game.blackName = rs.getString("black_player");
-        Game.turn = rs.getInt("turn");
+        Check.gameName = gameName;
+        Check.whiteName = rs.getString("white_player");
+        Check.blackName = rs.getString("black_player");
+        Check.turn = rs.getInt("turn");
         parseBoardState(rs.getString("board_state")); 
         System.out.println("Game loaded successfully from DB: " + gameName);
-        System.out.println("White: " +Game.whiteName + " | Black: " + Game.blackName + " | Turn: " + Game.turn);
+        System.out.println("White: " +Check.whiteName + " | Black: " + Check.blackName + " | Turn: " + Check.turn);
         return true;
        }
     } catch (SQLException e)
@@ -54,7 +54,7 @@ public class ReadGameDB {
 }
     
     /*
-    Rebuilds the Game.board from the board_state string
+    Rebuilds the Check.board from the board_state string
     Format Example: (Pawn, true)(null)(Rook,false)
     Row-separated by newlines or semicolons
     */
@@ -63,7 +63,7 @@ public class ReadGameDB {
         if(boardState == null || boardState.isEmpty()) return;
         
         //Reset board
-        Game.board = new Piece[8][8];
+        Check.board = new Piece[8][8];
         
         //Split by newlines or semicolons to separate rows
         String[] rows = boardState.trim().split("[\\n;]");
@@ -77,13 +77,13 @@ public class ReadGameDB {
                 String token = tokens[col].trim();
                 if(token.equals("(null)"))
                 {
-                    Game.board[row][col] = null;
+                    Check.board[row][col] = null;
                 } else {
                     token = token.substring(1, token.length() - 1); //remove brackets
                     String[] parts = token.split(",");
                     String type = parts[0];
                     boolean isWhite = Boolean.parseBoolean(parts[1]);
-                    Game.board[row][col] = PieceFactory.fromType(type, isWhite, row, col);
+                    Check.board[row][col] = PieceFactory.fromType(type, isWhite, row, col);
                 }
             }
         }

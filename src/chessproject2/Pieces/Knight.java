@@ -1,6 +1,6 @@
 package chessproject2.Pieces;
 
-import chessproject2.Game;
+import chessproject2.Check;
 import java.util.Arrays;
 
 /**
@@ -52,7 +52,7 @@ public class Knight extends Piece {
                 Piece target = board[newRow][newCol];
 
                 if (target == null || target.isWhite != this.isWhite) {
-                    if (checkDiscoved == false || !Game.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(newRow, newCol, board))) {
+                    if (checkDiscoved == false || !Check.isSquareAttacked(kingRow, kingCol, !isWhite, changeBoard(newRow, newCol, board))) {
                         validMoves[moveCount][0] = newRow;
                         validMoves[moveCount][1] = newCol;
                         moveCount++;
