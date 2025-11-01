@@ -166,27 +166,26 @@ public class HomeFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_newGameButtonActionPerformed
 
     private void gameLogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameLogButtonActionPerformed
-        GameLogFrame gameLogs = new GameLogFrame();
-        gameLogs.setVisible(true);
+        new GameLogFrame().setVisible(true);
         this.dispose();
      }//GEN-LAST:event_gameLogButtonActionPerformed
 
     private void loadGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadGameButtonActionPerformed
-        LoadGameFrame loadGame = new LoadGameFrame();
-        loadGame.setVisible(true);
-        this.dispose();
+      new LoadGameFrame().setVisible(true);
+      this.dispose();
     }//GEN-LAST:event_loadGameButtonActionPerformed
 
     private void playerStatsButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playerStatsButton1ActionPerformed
-        PlayerStatsFrame plasyerStats = new PlayerStatsFrame();
-        plasyerStats.setVisible(true);
-        this.dispose();
+      new PlayerStatsFrame().setVisible(true);
+      this.dispose();
     }//GEN-LAST:event_playerStatsButton1ActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
+       
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

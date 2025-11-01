@@ -4,8 +4,12 @@
  */
 package chessproject2.GUI;
 
+import chessproject2.BoardFileIO;
+import chessproject2.ChessDB.BoardStateCodec;
 import chessproject2.Player;
-import chessproject2.PlayerFileIO;
+import chessproject2.ChessDB.PlayerDB;
+import chessproject2.ChessDB.SaveGameDB;
+import chessproject2.Game;
 import java.util.HashMap;
 
 /**
@@ -25,7 +29,7 @@ public class NewGameFrame extends javax.swing.JFrame {
         TextPrompt.addPlaceholder(bTextField, "Enter name here");
 
         //Loads existing players from PlayerFileIO
-        HashMap<String, Player> players = PlayerFileIO.loadPlayers();
+        HashMap<String, Player> players = PlayerDB.loadPlayers();
         if (players != null && !players.isEmpty()) {
             boolean first = true;
 
@@ -312,7 +316,21 @@ public class NewGameFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
-        GameFrame home = new GameFrame(getGameName(), getWName(), getBName());
+        String gName = getGameName();
+        String wName = getWName();
+        String bName = getBName();
+        //Initialize global game state for the new game
+        Game.gameName = gName;
+        Game.whiteName = wName;
+        Game.blackName = bName;
+        Game.turn = 0;
+        Game.board = BoardFileIO.loadDefaultBoard();
+        
+        //Persist into DB so later Load Game uses ReadGameDB
+        SaveGameDB.saveOrUpdateGame(gName, wName, bName, 0, BoardStateCodec.encode(Game.board));
+        
+        //Launch the Game UI
+        GameFrame home = new GameFrame(gName, wName, bName);
         home.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_createButtonActionPerformed

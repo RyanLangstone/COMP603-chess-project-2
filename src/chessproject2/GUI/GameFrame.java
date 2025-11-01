@@ -5,8 +5,11 @@
 package chessproject2.GUI;
 
 
+import chessproject2.ChessDB.BoardStateCodec;
+import chessproject2.ChessDB.SaveGameDB;
 import java.awt.Color;
 import chessproject2.GUI.PawnPromotionPanel.PromotionSelectionListener;
+import chessproject2.Game;
 import chessproject2.Pieces.Piece;
 
 
@@ -45,20 +48,33 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
         gameOverPanel.setVisible(false);
         pawnPromotionPanel2.setPromotionSelectionListener(this);
         pawnPromotionPanel2.setVisible(false);
+        
+        boardPanel.setMoveListener((algebraic,ply,curBoard,curTurn) -> {
+           SaveGameDB.saveMove(Game.gameName, ply, algebraic); 
+           SaveGameDB.updateTurnAndBoard(Game.gameName, curTurn, BoardStateCodec.encode(curBoard));
+         });
+        //If Game.* already holds a board (new game flow), show it
+        if(Game.board != null)
+        {
+            boardPanel.loadState(Game.board, Game.turn);
+        }
     }
 
     public GameFrame(String gameName, String whiteName, String blackName, Piece[][] board, int turn) {
         this.boardPanel = new chessproject2.GUI.BoardPanel(board, turn);
         initComponents();
-        this.boardPanel.loadBoard(board, turn);
         this.whitePlayerName = whiteName;
         this.blackPlayerName = blackName;
         gameNameLabel.setText(gameName);
-        updateTurnLabel(0);
+        updateTurnLabel(turn);
         gameOverPanel.setVisible(false);
         pawnPromotionPanel2.setPromotionSelectionListener(this);
         pawnPromotionPanel2.setVisible(false);
 
+        boardPanel.setMoveListener((algebraic,ply,curBoard,curTurn) -> {
+           SaveGameDB.saveMove(Game.gameName, ply, algebraic); 
+           SaveGameDB.updateTurnAndBoard(Game.gameName, curTurn, BoardStateCodec.encode(curBoard));
+         });
     }
 
     /**
@@ -240,6 +256,9 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
         if (promotionRow != -1 && promotionCol != -1) {
             // boardPanel is the field declared in GameFrame
             boardPanel.finalizePawnPromotion(promotionRow, promotionCol, pieceType);
+            //Persist board after promotion
+            SaveGameDB.updateTurnAndBoard(Game.gameName, BoardPanel.turn, BoardStateCodec.encode(boardPanelBoard()));
+            SaveGameDB.saveMove(Game.gameName, BoardPanel.turn, "promote = " + pieceType);
         }
 
         // 3. Reset the stored coordinates for the next promotion
@@ -247,6 +266,11 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
         promotionCol = -1;
 
         // The BoardPanel.finalizePawnPromotion handles turn increment and repaint.
+    }
+    
+    private chessproject2.Pieces.Piece[][] boardPanelBoard()
+    {
+        return Game.board;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

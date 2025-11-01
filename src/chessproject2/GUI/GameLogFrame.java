@@ -4,6 +4,12 @@
  */
 package chessproject2.GUI;
 
+import chessproject2.ChessDB.SaveGameDB;
+import java.awt.Font;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author RyanL
@@ -15,21 +21,48 @@ public class GameLogFrame extends javax.swing.JFrame {
      */
     public GameLogFrame() {
        initComponents();
-        //Loads existing players from PlayerFileIO
-//        String [][]
-//        if (players != null && !players.isEmpty()) {
-//            boolean first = true;
-//
-//            for (Player p : players.values()) {
-//                wExistingDropdown.addItem(p.getName());
-//                bExistingDropdown.addItem(p.getName());
-//                if (first) {
-//                    wExistingDropdown.setSelectedItem(p.getName());
-//                    bExistingDropdown.setSelectedItem(p.getName());
-//                    first = false;
-//                }
-//            }
-//        }
+       setTitle("Chess Game Logs");
+       logBox.setEditable(false);
+       logBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
+       
+       populateGameList();
+    }
+    
+    private void populateGameList()
+    {
+        List<String> games = SaveGameDB.listGameNames();
+        if(games.isEmpty())
+        {
+            logBox.setText("No saved games found.");
+            gameLogComboBox.setModel(new DefaultComboBoxModel<>(new String[]{}));
+            gameLogComboBox.setEnabled(false);
+            return;
+        }
+        gameLogComboBox.setEnabled(true);
+        gameLogComboBox.setModel(new DefaultComboBoxModel<>(games.toArray(new String[0])));
+        gameLogComboBox.setSelectedIndex(0);
+        loadMovesForSelected();
+    }
+    
+    private void loadMovesForSelected()
+    {
+        Object selObj = gameLogComboBox.getSelectedItem();
+        if(selObj == null)
+        {
+            logBox.setText("");
+            return;
+        }
+        String sel = selObj.toString();
+        List<String> moves = SaveGameDB.loadMoves(sel);
+        if(moves.isEmpty())
+        {
+            logBox.setText("No moves yet for: " + sel);
+        } else {
+            StringBuilder sb = new StringBuilder();
+            for(String m : moves) sb.append(m).append('\n');
+            logBox.setText(sb.toString());
+            logBox.setCaretPosition(0); //
+        }
     }
 
     /**
@@ -123,6 +156,8 @@ public class GameLogFrame extends javax.swing.JFrame {
 
     private void gameLogComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameLogComboBoxActionPerformed
         // TODO add your handling code here:
+        if (!gameLogComboBox.isEnabled()) return;
+        loadMovesForSelected();
     }//GEN-LAST:event_gameLogComboBoxActionPerformed
 
     /**

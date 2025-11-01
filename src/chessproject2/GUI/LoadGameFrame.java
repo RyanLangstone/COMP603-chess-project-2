@@ -4,6 +4,14 @@
  */
 package chessproject2.GUI;
 
+import chessproject2.ChessDB.ChessDatabase;
+import chessproject2.ChessDB.ReadGameDB;
+import chessproject2.ChessDB.SaveGameDB;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import java.sql.*;
+
 /**
  *
  * @author RyanL
@@ -15,6 +23,9 @@ public class LoadGameFrame extends javax.swing.JFrame {
      */
     public LoadGameFrame() {
         initComponents();
+        setTitle("Load Game");
+        setLocationRelativeTo(null);
+        populateGameList();
         //load in combo box of all the loaded games
     }
 
@@ -134,6 +145,56 @@ public class LoadGameFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void populateGameList()
+    {
+        List<String> games = SaveGameDB.listGameNames();
+        if (games.isEmpty())
+        {
+            saveGameComboBox.setModel(new DefaultComboBoxModel<>(new String[]{}));
+            saveGameComboBox.setEnabled(false);
+            loadButton.setEnabled(false);
+            whiteNameValueLabel.setText("No games");
+            blackNameValueLabel.setText("No games");
+            JOptionPane.showMessageDialog(this, "No saved games found.");
+            return;
+        }
+        saveGameComboBox.setEnabled(true);
+        loadButton.setEnabled(true);
+        saveGameComboBox.setModel(new DefaultComboBoxModel<>(games.toArray(new String[0])));
+        saveGameComboBox.setSelectedIndex(0);
+        previewSelected();
+    }
+    
+    private void previewSelected()
+    {
+        Object sel = saveGameComboBox.getSelectedItem();
+        if(sel == null)
+        {
+            whiteNameValueLabel.setText("-");
+            blackNameValueLabel.setText("-");
+            return;
+        }
+        String gameName = sel.toString();
+        try (Connection conn = ChessDatabase.getConnection();
+                PreparedStatement ps = conn.prepareStatement(
+                "SELECT white_player, black_player FROM games WHERE game_name=?")) {
+            ps.setString(1, gameName);
+            try(ResultSet rs = ps.executeQuery())
+            {
+                if(rs.next())
+                {
+                    whiteNameValueLabel.setText(rs.getString(1));
+                    blackNameValueLabel.setText(rs.getString(2));
+                } else {
+                    whiteNameValueLabel.setText("-");
+                    blackNameValueLabel.setText("-");
+                }
+            }
+        } catch (SQLException e)
+        {
+            JOptionPane.showMessageDialog(this, "Failed to preview game meta.\n" + e.getMessage(), "DB Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         HomeFrame home = new HomeFrame();
         home.setVisible(true);
@@ -141,15 +202,27 @@ public class LoadGameFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
-//        GameFrame home = new GameFrame(getGameName(), getWName(), getBName(), board(), turn);
-//        home.setVisible(true);
-//        this.dispose();
+        Object sel = saveGameComboBox.getSelectedItem();
+        if(sel == null)
+        {
+            JOptionPane.showMessageDialog(this, "Select a game first.");
+            return;
+        }
+        String gameName = sel.toString();
+        boolean ok = ReadGameDB.loadGame(gameName);
+        if(!ok)
+        {
+            JOptionPane.showMessageDialog(this, "Failed to load: " +gameName);
+            return;
+        }
+        GameFrame gf = new GameFrame();
+        gf.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_loadButtonActionPerformed
 
     private void saveGameComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveGameComboBoxActionPerformed
-        // TODO add your handling code here:
-//        whiteNameValueLabel.setText(wName);
-//        blackNameValueLabel.setText(bName);
+            if (!saveGameComboBox.isEnabled()) return;
+            previewSelected();
     }//GEN-LAST:event_saveGameComboBoxActionPerformed
 
     /**

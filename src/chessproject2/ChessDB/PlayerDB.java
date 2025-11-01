@@ -25,15 +25,15 @@ public class PlayerDB {
     {
         HashMap<String, Player> players = new HashMap<>();
         
-        try (Connection conn = ChessDatabase.getConnection();
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM players"))
+        Connection conn = ChessDatabase.getConnection();
+        try (Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT name,wins,losses FROM players"))
         {
             while (rs.next())
             {
-                String name = rs.getString("name");
-                int wins = rs.getInt("wins");
-                int losses = rs.getInt("losses");
+                String name = rs.getString(1);
+                int wins = rs.getInt(2);
+                int losses = rs.getInt(3);
                 
                 Player p = new Player(name);
                 for (int i = 0; i < wins; i++) p.addWin();
@@ -61,12 +61,12 @@ public class PlayerDB {
     */
     public static void savePlayers(Player player)
     {
-      try (Connection conn = ChessDatabase.getConnection())
-      {
+     Connection conn = ChessDatabase.getConnection();
+      
           //Try update first
-          PreparedStatement update = conn.prepareStatement(
+        try (PreparedStatement update = conn.prepareStatement(
                   "UPDATE players SET wins=?, losses=? WHERE name=?"
-          );
+          )) {
           update.setInt(1, player.getWins());
           update.setInt(2, player.getLosses());
           update.setString(3, player.getName());
@@ -75,13 +75,14 @@ public class PlayerDB {
           //If no rows are updated, insert the values
           if(affected == 0)
           {
-              PreparedStatement insert = conn.prepareStatement(
+            try (PreparedStatement insert = conn.prepareStatement(
               "INSERT INTO players(name, wins, losses) VALUES (?,?,?)"
-              );
+              )) {
               insert.setString(1, player.getName());
               insert.setInt(2, player.getWins());
               insert.setInt(3, player.getLosses());
               insert.executeUpdate();
+          }
           }
       } catch (SQLException e)
       {

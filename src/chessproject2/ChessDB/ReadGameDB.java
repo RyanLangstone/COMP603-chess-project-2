@@ -22,14 +22,13 @@ import java.util.List;
  */
 public class ReadGameDB {
     public static boolean loadGame(String gameName) {
-    try (Connection conn = ChessDatabase.getConnection())
-    {
+     Connection conn = ChessDatabase.getConnection();
         //Retrieve game data
-        PreparedStatement ps = conn.prepareStatement(
+       try (PreparedStatement ps = conn.prepareStatement(
         "SELECT white_player, black_player, turn, board_state FROM games WHERE game_name = ?"
-        );
+        )) {
         ps.setString(1, gameName);
-        ResultSet rs = ps.executeQuery();
+       try (ResultSet rs = ps.executeQuery()) {
         
         if (!rs.next())
         {
@@ -42,14 +41,11 @@ public class ReadGameDB {
         Game.whiteName = rs.getString("white_player");
         Game.blackName = rs.getString("black_player");
         Game.turn = rs.getInt("turn");
-        
-        //Parse board state
-        String boardState = rs.getString("board_state");
-        parseBoardState(boardState);
-        
+        parseBoardState(rs.getString("board_state")); 
         System.out.println("Game loaded successfully from DB: " + gameName);
         System.out.println("White: " +Game.whiteName + " | Black: " + Game.blackName + " | Turn: " + Game.turn);
         return true;
+       }
     } catch (SQLException e)
     {
         e.printStackTrace();
@@ -95,19 +91,19 @@ public class ReadGameDB {
     
     public static List<String> loadMoves(String gameName)
     {
-        List<String> moves = new ArrayList<>();
-        try (Connection conn = ChessDatabase.getConnection())
-        {
-            PreparedStatement ps = conn.prepareStatement(
+        Connection conn = ChessDatabase.getConnection();
+         List<String> moves = new ArrayList<>();
+          try (PreparedStatement ps = conn.prepareStatement(
             "SELECT move_text FROM moves WHERE game_name = ? ORDER BY move_number"
-            );
+            )) {
             ps.setString(1, gameName);
-            ResultSet rs = ps.executeQuery();
+           try (ResultSet rs = ps.executeQuery()) {
             
             while(rs.next())
             {
                 moves.add(rs.getString("move_text"));
             }
+           }
         } catch (SQLException e)
         {
             e.printStackTrace();

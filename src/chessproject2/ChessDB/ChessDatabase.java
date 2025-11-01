@@ -15,21 +15,26 @@ public class ChessDatabase {
     private static final String DB_URL = "jdbc:derby:chessdb;create=true";
     private static Connection conn;
     
-    public static void init() //The database is embedded so all we have to do is call ChessDatabase.init() when the app starts
+    public static synchronized void init() //The database is embedded so all we have to do is call ChessDatabase.init() when the app starts
     {
-        try{
-            conn = DriverManager.getConnection(DB_URL);
-            createTables();
-            System.out.println("Connected successfully to the embedded Derby database");
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+        if(conn != null) return;
+      try {
+          try{
+              Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+          } catch (ClassNotFoundException ignore) {}
+          conn = DriverManager.getConnection(DB_URL);
+          conn.setAutoCommit(true);
+          createTables(conn);
+          System.out.println("Connected to embedded derby at: " + DB_URL);
+      } catch (SQLException e)
+      {
+          throw new RuntimeException("Failed to init derby connection", e);
+      }
     }
     
-    private static void createTables() throws SQLException
+    private static void createTables(Connection c) throws SQLException
     {
-        Statement stmt = conn.createStatement();
+       try (Statement stmt = conn.createStatement()) {
         
         //Player table
         try {
@@ -50,7 +55,7 @@ public class ChessDatabase {
         stmt.executeUpdate(
                 "CREATE TABLE games (" +
                 "id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
-                "game_name VARCHAR(50), " +
+                "game_name VARCHAR(50) UNIQUE, " +
                  "white_player VARCHAR(50), " +
                  "black_player VARCHAR(50), " +
                         "turn INT, " +
@@ -64,6 +69,7 @@ public class ChessDatabase {
             if (!tableAlreadyExists(e)) throw e;
         }
         
+        //Moves table
         try {
             stmt.executeUpdate(
             "CREATE TABLE moves (" +
@@ -77,10 +83,8 @@ public class ChessDatabase {
         {
             if (!tableAlreadyExists(e)) throw e;
         }
-        
-        stmt.close();
     }
-    
+    }
     private static boolean tableAlreadyExists(SQLException e)
     {
         return e.getSQLState().equals("X0Y32"); //Derby code for Table already exists
@@ -88,17 +92,21 @@ public class ChessDatabase {
     
     public static Connection getConnection()
     {
+        if (conn == null) init();
         return conn;
     }
     
-    public static void close()
+    public static synchronized void close()
     {
+        if (conn == null) return;
         try
         {
-            if (conn != null) conn.close();
+            conn.close();
         } catch (SQLException e)
         {
             e.printStackTrace();
+        } finally {
+            conn = null;
         }
     }
 }

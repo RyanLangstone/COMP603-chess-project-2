@@ -5,6 +5,7 @@
 package chessproject2.GUI;
 
 import chessproject2.BoardFileIO;
+import chessproject2.ChessDB.BoardStateCodec;
 import static chessproject2.Game.isCheckmate;
 import static chessproject2.Game.isSquareAttacked;
 import chessproject2.Pieces.Piece;
@@ -43,7 +44,7 @@ public class BoardPanel extends javax.swing.JPanel {
     }
     
     public BoardPanel() {
-        this(BoardFileIO.loadDefaultBoard(), 0);    //if new game is created and want to use default borad, this constructor will be called
+        this(BoardStateCodec.initialBoardArray(), 0);    //if new game is created and want to use default board, this constructor will be called
     }
 
     public BoardPanel(Piece[][] board, int turn) {
@@ -63,7 +64,7 @@ public class BoardPanel extends javax.swing.JPanel {
                 final int currentTurn = BoardPanel.turn; // Use the static turn field here
                 if (selectedRow == -1) {
                     //Select a piece
-                    if (board[pieceRow][col] != null && (piece.isWhite && currentTurn % 2 == 0 || (!piece.isWhite && currentTurn % 2 == 1))) {
+                    if (piece != null && (piece.isWhite && currentTurn % 2 == 0 || (!piece.isWhite && currentTurn % 2 == 1))) {
                         selectedRow = row;
                         selectedCol = col;
                         repaint();
@@ -71,7 +72,7 @@ public class BoardPanel extends javax.swing.JPanel {
                 } else {
                     //Try to move selected piece
 
-                    if (board[pieceRow][col] != null && (piece.isWhite && currentTurn % 2 == 0 || (!piece.isWhite && currentTurn % 2 == 1))) {
+                    if (piece != null && (piece.isWhite && currentTurn % 2 == 0 || (!piece.isWhite && currentTurn % 2 == 1))) {
                         selectedRow = row;
                         selectedCol = col;
                         repaint();
@@ -89,11 +90,6 @@ public class BoardPanel extends javax.swing.JPanel {
         addMouseListener(mouseHandler);
     }
     
-    public void loadBoard(Piece[][] newBoard, int newTurn) {
-        this.board = newBoard;
-        BoardPanel.turn = newTurn; 
-        this.repaint(); 
-    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -131,7 +127,7 @@ public class BoardPanel extends javax.swing.JPanel {
                 piece.setPosition(toRow, toCol);
 
                 //Special rules
-                if ("Piece".equals(piece.type) && toCol != fromCol && board[toRow][toCol] == null) {
+                if ("Pawn".equals(piece.type) && toCol != fromCol && board[toRow][toCol] == null) {
                     board[fromRow][toCol] = null; //capture the En Passant piece
                 }
 
@@ -147,9 +143,9 @@ public class BoardPanel extends javax.swing.JPanel {
                 }
                 
                 
-
-                if (board[toRow][toCol].type == "Pawn" && ((piece.isWhite && toRow == 7) || (!piece.isWhite && toRow == 0))) {
-                    frame.showPawnPromotion(piece.isWhite, toRow, toCol);
+                    //Pawn Promotion entry (shows panel and stops flow here; persistence after selection
+                if ("Pawn".equals(board[toRow][toCol].type) && ((piece.isWhite && toRow == 7) || (!piece.isWhite && toRow == 0))) {
+                   if (frame != null) frame.showPawnPromotion(piece.isWhite, toRow, toCol);
                     return;
                 }
 
@@ -162,10 +158,8 @@ public class BoardPanel extends javax.swing.JPanel {
                     // 1. Remove the mouse listener to prevent further input
 
                     removeMouseListener(mouseHandler);
-                    frame.gameover(turn % 2 == 0 ? true : false);
-
-                    break;
-
+                   if(frame != null) frame.gameover(turn % 2 == 0 ? true : false);
+                   
                 } else {
                     // Just check
                     // Find opponent king
@@ -208,6 +202,9 @@ public class BoardPanel extends javax.swing.JPanel {
         char rank = (char) ('1' + row);
         return "" + file + rank;
     }
+    
+    public Piece[][] getBoard() {return board; }
+    public int getTurn() { return turn; }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -291,7 +288,10 @@ public class BoardPanel extends javax.swing.JPanel {
         if (frame != null) {
             frame.updateTurnLabel(turn);
         }
-
+        if(moveListener != null)
+        {
+            moveListener.onMove("= " +pieceType, turn, board, turn);
+        }
         // 4. Redraw the board to show the promoted piece
         repaint();
     }
