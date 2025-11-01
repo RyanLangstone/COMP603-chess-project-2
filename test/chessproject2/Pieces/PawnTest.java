@@ -1,7 +1,7 @@
 package chessproject2.Pieces;
 
 import chessproject2.GUI.BoardPanel;
-import chessproject2.Game;
+import chessproject2.Check;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -16,7 +16,7 @@ public class PawnTest {
     @Before
     public void setUp() {
         board = new Piece[8][8];
-        Game.board = board; // Assign to the static field
+        Check.board = board; // Assign to the static field
         BoardPanel.turn = 0; // Reset static turn counter
     }
 
