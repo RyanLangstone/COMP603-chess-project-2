@@ -178,7 +178,7 @@ public class BoardPanel extends javax.swing.JPanel {
                     board[toRow][toCol - 1] = board[toRow][7];
                    if(board[toRow][toCol - 1] != null) board[toRow][toCol - 1].setPosition(toRow, toCol - 1);
                     board[toRow][7] = null;
-                } else if ("King".equals(piece.type) && toRow - fromCol == -2) {
+                } else if ("King".equals(piece.type) && toCol - fromCol == -2) {
                     board[toRow][toCol + 1] = board[toRow][0];
                     if(board[toRow][toCol + 1] != null) board[toRow][toCol + 1].setPosition(toRow, toCol + 1);
                     board[toRow][0] = null;
