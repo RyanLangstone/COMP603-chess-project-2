@@ -145,26 +145,24 @@ public class LoadGameFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void populateGameList()
-    {
+    private void populateGameList() {
         List<String> games = SaveGameDB.listGameNames();
         saveGameComboBox.removeAllItems();
-       for (String g : games) saveGameComboBox.addItem(g);
-       if(!games.isEmpty())
-       {
-           saveGameComboBox.setSelectedIndex(0);
-           updateMetaLabels(games.get(0));
-       } else {
+        for (String g : games) {
+            saveGameComboBox.addItem(g);
+        }
+        if (!games.isEmpty()) {
+            saveGameComboBox.setSelectedIndex(0);
+            updateMetaLabels(games.get(0));
+        } else {
             whiteNameValueLabel.setText("-");
             blackNameValueLabel.setText("-");
-       }
+        }
     }
-    
-    private void updateMetaLabels(String gameName)
-    {
+
+    private void updateMetaLabels(String gameName) {
         ReadGameDB.GameMeta meta = ReadGameDB.fetchGameMeta(gameName);
-        if(meta == null)
-        {
+        if (meta == null) {
             whiteNameValueLabel.setText("-");
             blackNameValueLabel.setText("-");
         } else {
@@ -172,7 +170,7 @@ public class LoadGameFrame extends javax.swing.JFrame {
             blackNameValueLabel.setText(meta.black);
         }
     }
-    
+
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         HomeFrame home = new HomeFrame();
         home.setVisible(true);
@@ -181,10 +179,11 @@ public class LoadGameFrame extends javax.swing.JFrame {
 
     private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
         String sel = (String) saveGameComboBox.getSelectedItem();
-        if (sel == null) return;
+        if (sel == null) {
+            return;
+        }
         boolean ok = ReadGameDB.loadGame(sel);
-        if(!ok)
-        {
+        if (!ok) {
             JOptionPane.showMessageDialog(this, "Failed to load: " + sel);
             return;
         }
@@ -194,45 +193,10 @@ public class LoadGameFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_loadButtonActionPerformed
 
     private void saveGameComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveGameComboBoxActionPerformed
-            String sel = (String) saveGameComboBox.getSelectedItem();
-            if (sel != null) updateMetaLabels(sel);
+        String sel = (String) saveGameComboBox.getSelectedItem();
+        if (sel != null)
+            updateMetaLabels(sel);
     }//GEN-LAST:event_saveGameComboBoxActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoadGameFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoadGameFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoadGameFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoadGameFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new LoadGameFrame().setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel HeaderLabel;
     private javax.swing.JButton backButton;

@@ -322,7 +322,7 @@ public class NewGameFrame extends javax.swing.JFrame {
         String gName = getGameName();
         String wName = getWName();
         String bName = getBName();
-        
+
         // --- FIX 1: SAVE NEW PLAYERS ---
         // Load existing players from the database
         HashMap<String, Player> players = PlayerDB.loadPlayers();

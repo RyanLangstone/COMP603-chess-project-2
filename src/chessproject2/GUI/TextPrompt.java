@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class TextPrompt {
+
     public static void addPlaceholder(JTextField field, String placeholder) {
         field.setText(placeholder);
         field.setForeground(Color.GRAY);
