@@ -1,36 +1,27 @@
 package chessproject2;
 
-import chessproject2.ChessDB.ReadGameDB;
-import chessproject2.ChessDB.PlayerDB;
-
 import chessproject2.Pieces.Piece;
-import chessproject2.Pieces.PieceConversion;
-import chessproject2.Pieces.PieceFactory;
-import static chessproject2.Pieces.PieceConversion.chessNotationToIndex;
-
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
 
 /**
- * Main game logic for chess Handles initialization, menus, players, board
- * rendering, move validation, and special rules
+ * Global variables such as gameName, whiteName, blackName, and turn Holds
+ * methods such as isCheckmate and isSquareAttacked used in BoardPanel and the
+ * JUnitTests isSquareAttacked is used across all child classes such as Bishop
+ * and King
  *
  * @author RyanL and Yaacoub
  */
 public class Check {
 
-    //8x8 chess board, stores Piece objects or nul
-    
     //Current game metadata
     public static String gameName = ""; //Current game name
     public static String whiteName = ""; // White players name
     public static String blackName = ""; //Black players name
     public static int turn = 0; // Current turn counter (even = white, odd = black)    
 
+    /*
+    First checks for the king and then checks if the king is under attack to which
+    it then checks all possible moves for the king and also friendly pieces
+     */
     public static boolean isCheckmate(boolean isWhiteTurn, Piece[][] board) {
         // 1. Locate the king
         int kingRow = -1, kingCol = -1;

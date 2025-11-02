@@ -1,18 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package chessproject2.GUI;
 
 import chessproject2.ChessDB.ChessDatabase;
-import chessproject2.ChessDB.ReadGameDB;
-import chessproject2.ChessDB.SaveGameDB;
-import java.util.List;
-import javax.swing.JOptionPane;
 
 /**
+ * HomeFrame holds the MainMenu and allows the player to navigate to the other
+ * Panels such as newGame GameLog, Load Game, and PlayerStats
  *
- * @author RyanL
+ * @author RyanL and Yaacoub
  */
 public class HomeFrame extends javax.swing.JFrame {
 
@@ -145,37 +139,35 @@ public class HomeFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_newGameButtonActionPerformed
 
     private void gameLogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameLogButtonActionPerformed
-       GameLogFrame f = new GameLogFrame();
-       f.setVisible(true);
-       this.dispose();
+        GameLogFrame f = new GameLogFrame();
+        f.setVisible(true);
+        this.dispose();
      }//GEN-LAST:event_gameLogButtonActionPerformed
 
     private void loadGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadGameButtonActionPerformed
-      LoadGameFrame f = new LoadGameFrame();
-      f.setVisible(true);
-      this.dispose();
+        LoadGameFrame f = new LoadGameFrame();
+        f.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_loadGameButtonActionPerformed
 
     private void playerStatsButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playerStatsButton1ActionPerformed
-      PlayerStatsFrame f = new PlayerStatsFrame();
-      f.setVisible(true);
-      this.dispose();
+        PlayerStatsFrame f = new PlayerStatsFrame();
+        f.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_playerStatsButton1ActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
-       
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        
         ChessDatabase.init();
-        
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {

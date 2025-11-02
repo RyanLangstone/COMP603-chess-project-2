@@ -1,11 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package chessproject2.GUI;
 
-import chessproject2.BoardFileIO;
-import chessproject2.BoardStateUtil;
 import chessproject2.ChessDB.BoardStateCodec;
 import chessproject2.Player;
 import chessproject2.ChessDB.PlayerDB;
@@ -14,8 +8,10 @@ import chessproject2.Check;
 import java.util.HashMap;
 
 /**
+ * NewGameFrame is the GUI where it allows the user to create a new game, also
+ * gives them the option to create a new player or use an existing one
  *
- * @author RyanL
+ * @author RyanL and Yaacoub
  */
 public class NewGameFrame extends javax.swing.JFrame {
 
@@ -29,7 +25,7 @@ public class NewGameFrame extends javax.swing.JFrame {
         TextPrompt.addPlaceholder(wTextField, "Enter name here");
         TextPrompt.addPlaceholder(bTextField, "Enter name here");
 
-        //Loads existing players from PlayerFileIO
+        //Loads existing players from PlayerDB
         HashMap<String, Player> players = PlayerDB.loadPlayers();
         if (players != null && !players.isEmpty()) {
             boolean first = true;
@@ -323,7 +319,6 @@ public class NewGameFrame extends javax.swing.JFrame {
         String wName = getWName();
         String bName = getBName();
 
-        // --- FIX 1: SAVE NEW PLAYERS ---
         // Load existing players from the database
         HashMap<String, Player> players = PlayerDB.loadPlayers();
 
@@ -338,7 +333,6 @@ public class NewGameFrame extends javax.swing.JFrame {
 
         // Save the updated player map back to the database
         PlayerDB.savePlayers(players);
-        // --- END FIX 1 ---
 
         //Initialize global game state for the new game
         Check.gameName = gName;
@@ -346,12 +340,9 @@ public class NewGameFrame extends javax.swing.JFrame {
         Check.blackName = bName;
         Check.turn = 0;
 
-        // --- FIX 2: (See below) ---
-        // Use the correct, non-broken method to create the board
+        // Use the proper method to create the board
         BoardPanel.board = BoardStateCodec.initialBoardArray();
 
-        //Persist into DB so later Load Check uses ReadGameDB
-        // --- FIX 3 & 4: (See below) ---
         // Use the correct encoder that saves all required data
         SaveGameDB.saveOrUpdateGame(gName, wName, bName, 0, BoardStateCodec.encode(BoardPanel.board));
 

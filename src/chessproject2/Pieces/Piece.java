@@ -6,7 +6,7 @@ package chessproject2.Pieces;
  * protected depending on whether they are used outside of it or not for extra
  * security
  */
- public abstract class Piece implements Movable{
+public abstract class Piece implements Movable {
 
     public String type, unicode;
     public boolean isWhite;
@@ -92,5 +92,5 @@ package chessproject2.Pieces;
      *
      */
     @Override
-    public abstract int[][] ValidMoves(Piece[][] board, boolean checkDiscoved);    
+    public abstract int[][] ValidMoves(Piece[][] board, boolean checkDiscoved);
 }

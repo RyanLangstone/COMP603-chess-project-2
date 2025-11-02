@@ -1,18 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package chessproject2.GUI;
 
 import chessproject2.ChessDB.SaveGameDB;
 import java.awt.Font;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
 
 /**
  *
- * @author RyanL
+ * @author RyanL and Yaacoub
  */
 public class GameLogFrame extends javax.swing.JFrame {
 

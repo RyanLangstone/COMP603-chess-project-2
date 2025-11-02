@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package chessproject2.GUI;
 
 import chessproject2.Pieces.Knight;
@@ -14,8 +10,10 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 
 /**
+ * This just displays the PawnPromotion panel when a pawn reaches the opposing
+ * colors side, it allows you to choose between 4 pieces to change into
  *
- * @author RyanL
+ * @author RyanL and Yaacoub
  */
 public class PawnPromotionPanel extends javax.swing.JPanel {
 

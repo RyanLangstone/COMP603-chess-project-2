@@ -1,22 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package chessproject2.GUI;
-
 
 import chessproject2.ChessDB.BoardStateCodec;
 import chessproject2.ChessDB.SaveGameDB;
 import java.awt.Color;
-import chessproject2.GUI.PawnPromotionPanel.PromotionSelectionListener;
 import chessproject2.Check;
 import chessproject2.ChessDB.PlayerDB;
 import chessproject2.Pieces.Piece;
 
-
 /**
+ * GameFrame shows us the frame outlay of the board and also the win screen it
+ * actively works with BoardPanel which displays the pieces on the board
  *
- * @author RyanL
+ * @author RyanL and Yaacoub
  */
 public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.PromotionSelectionListener {
 
@@ -26,13 +21,12 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
     private int promotionRow = -1;
     private int promotionCol = -1;
 
-    public GameFrame()
-    {
+    public GameFrame() {
         this(Check.gameName, Check.whiteName, Check.blackName);
         boardPanel.loadState(BoardPanel.board, Check.turn);
         updateTurnLabel(Check.turn);
     }
-    
+
     /**
      *
      * @param gameName entered name of the game
@@ -49,14 +43,13 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
         gameOverPanel.setVisible(false);
         pawnPromotionPanel2.setPromotionSelectionListener(this);
         pawnPromotionPanel2.setVisible(false);
-        
-        boardPanel.setMoveListener((algebraic,ply,curBoard,curTurn) -> {
-           SaveGameDB.saveMove(Check.gameName, ply, algebraic); 
-           SaveGameDB.updateTurnAndBoard(Check.gameName, curTurn, BoardStateCodec.encode(curBoard));
-         });
+
+        boardPanel.setMoveListener((algebraic, ply, curBoard, curTurn) -> {
+            SaveGameDB.saveMove(Check.gameName, ply, algebraic);
+            SaveGameDB.updateTurnAndBoard(Check.gameName, curTurn, BoardStateCodec.encode(curBoard));
+        });
         //If Check.* already holds a board (new game flow), show it
-        if(BoardPanel.board != null)
-        {
+        if (BoardPanel.board != null) {
             boardPanel.loadState(BoardPanel.board, Check.turn);
         }
     }
@@ -72,10 +65,10 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
         pawnPromotionPanel2.setPromotionSelectionListener(this);
         pawnPromotionPanel2.setVisible(false);
 
-        boardPanel.setMoveListener((algebraic,ply,curBoard,curTurn) -> {
-           String state = chessproject2.ChessDB.BoardStateCodec.encode(curBoard);
-           SaveGameDB.updateTurnAndBoard(Check.gameName, curTurn, state);
-         });
+        boardPanel.setMoveListener((algebraic, ply, curBoard, curTurn) -> {
+            String state = chessproject2.ChessDB.BoardStateCodec.encode(curBoard);
+            SaveGameDB.updateTurnAndBoard(Check.gameName, curTurn, state);
+        });
     }
 
     /**
@@ -199,9 +192,7 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    
-    
+
     private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
         HomeFrame home = new HomeFrame();
         home.setVisible(true);
@@ -271,26 +262,21 @@ public class GameFrame extends javax.swing.JFrame implements PawnPromotionPanel.
 
         // The BoardPanel.finalizePawnPromotion handles turn increment and repaint.
     }
-    
-    private chessproject2.Pieces.Piece[][] boardPanelBoard()
-    {
+
+    private chessproject2.Pieces.Piece[][] boardPanelBoard() {
         return BoardPanel.board;
     }
-    
-    public void setWins(boolean isWhite)
-    {
-        if(isWhite)
-        {
+
+    public void setWins(boolean isWhite) {
+        if (isWhite) {
             PlayerDB.updateWins(whitePlayerName);
             PlayerDB.updateLosses(blackPlayerName);
         } else {
-             PlayerDB.updateWins(blackPlayerName);
+            PlayerDB.updateWins(blackPlayerName);
             PlayerDB.updateLosses(whitePlayerName);
         }
     }
-    
-    
-   
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private chessproject2.GUI.BoardPanel boardPanel;

@@ -1,11 +1,11 @@
-
 package chessproject2;
 
 import java.io.Serializable;
 
 /**
  * All of the player attributes are stored here
- * 
+ *
+ * @Author RyanL and Yaacoub
  */
 public class Player implements Serializable {
 

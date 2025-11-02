@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package chessproject2.GUI;
 
 import chessproject2.ChessDB.PlayerDB;
@@ -11,8 +7,10 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
+ * PlayerStatsFrame shows the user all the current players that have been made
+ * and there win losses stats
  *
- * @author RyanL
+ * @author RyanL and Yaacoub
  */
 public class PlayerStatsFrame extends javax.swing.JFrame {
 

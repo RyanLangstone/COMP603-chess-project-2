@@ -1,15 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package chessproject2.ChessDB;
 
 import chessproject2.Pieces.Piece;
 import chessproject2.Pieces.*;
 
 /**
+ * BoardStateCodec.encode is used to properly copy the boardstate at its current
+ * state to allow for SaveGameDB to update the turn and board Especially so that
+ * it can be used in ReadGameDB later on when wanting to load a saved game
  *
- * @author Explosive
+ * @author RyanL and Yaacoub
  */
 public class BoardStateCodec {
 

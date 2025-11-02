@@ -1,20 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package chessproject2.GUI;
 
-import chessproject2.ChessDB.ChessDatabase;
 import chessproject2.ChessDB.ReadGameDB;
 import chessproject2.ChessDB.SaveGameDB;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel;
+
 import javax.swing.JOptionPane;
-import java.sql.*;
 
 /**
+ * This is the LoadGameFrame GUI and what it does is that is shows the player
+ * the Game name thats loaded aswell as the players that were in this game It
+ * also uses a drop down box to give players the option to choose any save file
+ * they want to view or play
  *
- * @author RyanL
+ * @author RyanL and Yaacoub
  */
 public class LoadGameFrame extends javax.swing.JFrame {
 
